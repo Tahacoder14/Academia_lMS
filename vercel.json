@@ -1,29 +1,14 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": {
-      "required": true,
-      "description": "Your Supabase project URL"
-    },
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
-      "required": true,
-      "description": "Your Supabase anonymous key"
-    },
-    "NODE_ENV": "production"
-  },
   "functions": {
     "api/**/*.js": {
-      "memory": 3008,
       "maxDuration": 60,
       "runtime": "nodejs20.x"
     }
   },
-  "headers": [
+  "headers":[
     {
       "source": "/api/:path*",
-      "headers": [
+      "headers":[
         {
           "key": "Cache-Control",
           "value": "no-cache, no-store, must-revalidate"
@@ -32,7 +17,7 @@
     },
     {
       "source": "/:path*",
-      "headers": [
+      "headers":[
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
@@ -49,4 +34,3 @@
     }
   ]
 }
-
