@@ -13,18 +13,6 @@
     },
     "NODE_ENV": "production"
   },
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next@latest"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "functions": {
     "api/**/*.js": {
       "memory": 3008,
