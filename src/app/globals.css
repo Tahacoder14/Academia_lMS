@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-manrope: 'Manrope', sans-serif;
+}
+
+@layer base {
+  * {
+    /* Fixed: Using standard border-slate-200 instead of the broken border-border */
+    @apply border-slate-100 dark:border-slate-800 outline-none;
+  }
+  
+  body {
+    font-family: var(--font-manrope);
+    @apply bg-white text-slate-600 antialiased overflow-x-hidden;
+    letter-spacing: -0.015em; /* ProfessionalIndustry spacing */
+  }
+
+  /* Thin, Architectural fonts for headings */
+  h1, h2, h3, h4, h5 {
+    @apply font-light tracking-tighter text-slate-900 dark:text-white;
+  }
+}
+
+/* --- PREMIUM UI REFINEMENTS --- */
+
+/* Ultra-Thin Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 dark:bg-slate-800 rounded-full;
+}
+
+/* Smooth page transitions */
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Chrome Autofill fix to keep inputs white and clean */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #334155 !important;
+}
+@keyframes sidebarFlow {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+.animate-sidebar-line {
+  width: 100%;
+  animation: sidebarFlow 3s infinite ease-in-out;
+}
+@keyframes activeLine {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+/* .animate-sidebar-active {
+  animation: activeLine 2s infinite linear;
+ } */
+ /* @keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+} */ 
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg, 
+    rgba(99, 102, 241, 0.1) 0%, 
+    rgba(99, 102, 241, 1) 50%, 
+    rgba(99, 102, 241, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 4s infinite linear;
+}

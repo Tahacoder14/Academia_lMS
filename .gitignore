@@ -1,0 +1,31 @@
+# Node dependencies
+/node_modules
+
+# Next.js build output
+/.next
+/out
+
+# Production files
+/build
+
+# Local env files
+.env*
+
+# Vercel files
+.vercel
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# macOS
+.DS_Store
+
+# Editor directories
+.vscode/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
