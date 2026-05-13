@@ -5,15 +5,11 @@ import {
   getTeacherClasses,
   uploadResource,
   createTeacherAssessment,
-  getClassStudents,
-  markAttendance,
-  submitGrades,
   getTeachingResources
 } from '@/lib/api';
 import {
   BookOpen, Users2, Upload, BarChart3, Clock, CheckCircle2,
-  Plus, Download, Eye, Edit2, Loader2, Calendar, AlertCircle,
-  Filter, Search
+  Plus, Download, Eye, Edit2, Loader2, Calendar, AlertCircle, Search
 } from 'lucide-react';
 
 export default function TeacherDashboard() {
@@ -63,7 +59,7 @@ export default function TeacherDashboard() {
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!formData.title || !selectedClass) {
-      alert('Please fill all fields');
+      alert('Please fill all required fields');
       return;
     }
 
@@ -81,12 +77,11 @@ export default function TeacherDashboard() {
         is_visible_to_students: false
       });
 
-      const resourcesData = await getTeachingResources();
-      setResources(resourcesData);
+      const updatedResources = await getTeachingResources();
+      setResources(updatedResources);
 
-      // Reset form
       setFormData({ title: '', description: '', type: 'pdf', contentUrl: '', file: null });
-      alert('Resource submitted to coordinator for approval.');
+      alert('Resource uploaded successfully! Awaiting coordinator approval.');
     } catch (error) {
       console.error('Error uploading resource:', error);
       alert(error?.message || 'Failed to upload resource');
@@ -98,7 +93,7 @@ export default function TeacherDashboard() {
   const handleAssessmentCreate = async (e) => {
     e.preventDefault();
     if (!selectedClass || !assessmentData.title || !assessmentData.dueDate) {
-      alert('Select class and fill required assessment fields.');
+      alert('Please select a class and fill required fields');
       return;
     }
     try {
@@ -112,7 +107,7 @@ export default function TeacherDashboard() {
         total_marks: parseInt(assessmentData.totalMarks, 10) || 100
       });
       setAssessmentData({ title: '', description: '', dueDate: '', totalMarks: 100 });
-      alert('Assessment created successfully.');
+      alert('Assessment created successfully!');
     } catch (error) {
       console.error('Error creating assessment:', error);
       alert(error?.message || 'Failed to create assessment');
@@ -121,125 +116,104 @@ export default function TeacherDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="animate-spin text-indigo-500" size={40} />
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <Loader2 className="animate-spin text-indigo-600" size={48} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-12 pb-20 font-sans font-light animate-fade-in">
-      
-      {/* ============ HEADER ============ */}
-      <div className="border-b border-slate-100 dark:border-white/5 pb-12">
-        <h1 className="text-5xl font-light text-slate-950 dark:text-white tracking-tighter uppercase">
-          Teacher Portal
-        </h1>
-        <p className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.4em] mt-4">
-          Classroom Management & Teaching Resources
-        </p>
+    <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10 pb-12 px-4 sm:px-6">
+      {/* Header */}
+      <div className="border-b border-slate-200 dark:border-white/10 pb-8">
+        <h1 className="text-3xl sm:text-4xl font-light tracking-tight text-slate-900 dark:text-white">Teacher Portal</h1>
+        <p className="text-slate-500 dark:text-slate-400 mt-2">Manage classes, resources, assessments & attendance</p>
       </div>
 
-      {/* ============ QUICK STATS ============ */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <StatCard
-          icon={<BookOpen size={20} />}
-          label="My Classes"
-          value={classes.length}
-          color="indigo"
+      {/* Quick Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+        <StatCard icon={<BookOpen size={22} />} label="My Classes" value={classes.length} color="indigo" />
+        <StatCard 
+          icon={<Users2 size={22} />} 
+          label="Students" 
+          value={classes.reduce((sum, c) => sum + (c.studentCount || 0), 0)} 
+          color="emerald" 
         />
-        <StatCard
-          icon={<Users2 size={20} />}
-          label="Total Students"
-          value={classes.reduce((sum, c) => sum + (c.studentCount || 0), 0)}
-          color="emerald"
-        />
-        <StatCard
-          icon={<Upload size={20} />}
-          label="Resources Shared"
-          value={resources.length}
-          color="blue"
-        />
-        <StatCard
-          icon={<Clock size={20} />}
-          label="Pending Submissions"
-          value="0"
-          color="amber"
-        />
+        <StatCard icon={<Upload size={22} />} label="Resources" value={resources.length} color="blue" />
+        <StatCard icon={<Clock size={22} />} label="Pending" value="0" color="amber" />
       </div>
 
-      {/* ============ TAB NAVIGATION ============ */}
-      <div className="flex gap-4 border-b border-slate-100 dark:border-white/5 overflow-x-auto">
-        {['classes', 'resources', 'assessments', 'attendance', 'grades', 'resources-library'].map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-6 py-4 text-[11px] font-bold uppercase tracking-[0.3em] transition-colors border-b-2 whitespace-nowrap ${
-              activeTab === tab
-                ? 'text-indigo-600 dark:text-indigo-400 border-indigo-600'
-                : 'text-slate-500 border-transparent hover:text-slate-900 dark:hover:text-white'
-            }`}
-          >
-            {tab.replace('-', ' ')}
-          </button>
-        ))}
-      </div>
-
-      {/* ============ MY CLASSES TAB ============ */}
-      {activeTab === 'classes' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {classes.map(classItem => (
-            <ClassCard
-              key={classItem.id}
-              classData={classItem}
-              onSelect={() => setSelectedClass(classItem)}
-            />
+      {/* Tabs */}
+      <div className="border-b border-slate-200 dark:border-white/10 overflow-x-auto pb-1">
+        <div className="flex gap-1 min-w-max">
+          {['classes', 'resources', 'assessments', 'attendance', 'grades', 'resources-library'].map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-3 text-sm font-medium rounded-t-2xl transition-all whitespace-nowrap ${
+                activeTab === tab
+                  ? 'bg-white dark:bg-slate-900 border border-b-0 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white'
+                  : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+              }`}
+            >
+              {tab.replace('-', ' ')}
+            </button>
           ))}
+        </div>
+      </div>      {/* ==================== CLASSES TAB ==================== */}
+      {activeTab === 'classes' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {classes.length > 0 ? (
+            classes.map((classItem) => (
+              <ClassCard
+                key={classItem.id}
+                classData={classItem}
+                onSelect={() => setSelectedClass(classItem)}
+              />
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center border border-dashed border-slate-200 dark:border-white/10 rounded-3xl">
+              <BookOpen size={48} className="mx-auto mb-4 text-slate-400" />
+              <p className="text-slate-500">No classes assigned yet</p>
+            </div>
+          )}
         </div>
       )}
 
-      {/* ============ UPLOAD RESOURCES TAB ============ */}
+      {/* ==================== RESOURCES TAB ==================== */}
       {activeTab === 'resources' && (
         <div className="space-y-8">
           {/* Upload Form */}
-          <div className="p-8 bg-white dark:bg-[#0A0C14] border border-slate-100 dark:border-white/5 rounded-3xl">
-            <h2 className="text-[13px] font-bold text-slate-900 dark:text-white uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
-              <Upload size={16} />
-              Upload Teaching Resource
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 lg:p-10">
+            <h2 className="text-xl font-medium mb-8 flex items-center gap-3">
+              <Upload size={22} /> Upload New Resource
             </h2>
 
             <form onSubmit={handleUpload} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-                    Class
-                  </label>
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Class</label>
                   <select
                     value={selectedClass?.id || ''}
-                    onChange={(e) => {
-                      const selected = classes.find(c => c.id === e.target.value);
-                      setSelectedClass(selected);
-                    }}
-                    className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                    onChange={(e) => setSelectedClass(classes.find(c => c.id === e.target.value))}
+                    className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none"
                     required
                   >
                     <option value="">Select Class</option>
                     {classes.map(c => (
                       <option key={c.id} value={c.id}>
-                        {c.class?.name} - {c.subject?.name}
+                        {c.class?.name} — {c.subject?.name}
                       </option>
                     ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-                    Resource Type
-                  </label>
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Resource Type</label>
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                    className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                    className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   >
                     <option value="pdf">PDF Document</option>
                     <option value="quiz">Quiz</option>
@@ -250,74 +224,55 @@ export default function TeacherDashboard() {
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-                  Resource Title
-                </label>
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Title</label>
                 <input
                   type="text"
-                  placeholder="e.g., Chapter 5 - Algebra Introduction"
+                  placeholder="Chapter 5 - Introduction to Algebra"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-                  Description
-                </label>
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Description</label>
                 <textarea
-                  placeholder="Brief description of the resource..."
+                  placeholder="Brief description..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   rows={4}
                 />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-                  Content URL (video/pdf link)
-                </label>
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Content URL (optional)</label>
                 <input
                   type="url"
                   placeholder="https://..."
                   value={formData.contentUrl}
                   onChange={(e) => setFormData({ ...formData, contentUrl: e.target.value })}
-                  className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-                  Upload File
-                </label>
-                <input
-                  type="file"
-                  onChange={(e) => setFormData({ ...formData, file: e.target.files?.[0] })}
-                  className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none"
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={uploadingFile}
-                className="w-full px-6 py-4 bg-indigo-600 text-white text-[11px] font-bold uppercase tracking-[0.3em] rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 text-white font-medium rounded-2xl flex items-center justify-center gap-2 transition-all"
               >
-                <Upload size={16} />
+                {uploadingFile ? <Loader2 className="animate-spin" size={20} /> : <Upload size={20} />}
                 {uploadingFile ? 'Uploading...' : 'Upload Resource'}
               </button>
             </form>
           </div>
 
-          {/* Recent Uploads */}
-          <div className="p-8 bg-white dark:bg-[#0A0C14] border border-slate-100 dark:border-white/5 rounded-3xl">
-            <h3 className="text-[13px] font-bold text-slate-900 dark:text-white uppercase tracking-[0.3em] mb-6">
-              Your Recent Uploads
-            </h3>
-            <div className="space-y-4">
-              {resources.slice(0, 5).map(res => (
+          {/* Recent Resources */}
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8">
+            <h3 className="font-medium mb-6">Recent Uploads</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {resources.slice(0, 6).map(res => (
                 <ResourceItem key={res.id} resource={res} />
               ))}
             </div>
@@ -325,26 +280,20 @@ export default function TeacherDashboard() {
         </div>
       )}
 
-      {/* ============ ASSESSMENTS TAB ============ */}
+      {/* ==================== ASSESSMENTS TAB ==================== */}
       {activeTab === 'assessments' && (
-        <div className="p-8 bg-white dark:bg-[#0A0C14] border border-slate-100 dark:border-white/5 rounded-3xl">
-          <h2 className="text-[13px] font-bold text-slate-900 dark:text-white uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
-            <Plus size={16} />
-            Create Assessment / Assignment
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 lg:p-10">
+          <h2 className="text-xl font-medium mb-8 flex items-center gap-3">
+            <Plus size={22} /> Create New Assessment
           </h2>
           <form onSubmit={handleAssessmentCreate} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-                  Class + Subject
-                </label>
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Class</label>
                 <select
                   value={selectedClass?.id || ''}
-                  onChange={(e) => {
-                    const selected = classes.find(c => c.id === e.target.value);
-                    setSelectedClass(selected);
-                  }}
-                  className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                  onChange={(e) => setSelectedClass(classes.find(c => c.id === e.target.value))}
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   required
                 >
                   <option value="">Select Class</option>
@@ -356,104 +305,64 @@ export default function TeacherDashboard() {
                 </select>
               </div>
               <div>
-                <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-                  Due Date
-                </label>
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Due Date</label>
                 <input
                   type="date"
                   value={assessmentData.dueDate}
                   onChange={(e) => setAssessmentData({ ...assessmentData, dueDate: e.target.value })}
-                  className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   required
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input
-                type="text"
-                placeholder="Assessment title"
-                value={assessmentData.title}
-                onChange={(e) => setAssessmentData({ ...assessmentData, title: e.target.value })}
-                className="px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Total Marks"
-                value={assessmentData.totalMarks}
-                onChange={(e) => setAssessmentData({ ...assessmentData, totalMarks: e.target.value })}
-                className="px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-                min={1}
-                max={1000}
-              />
-            </div>
-            <textarea
-              placeholder="Assessment instructions..."
-              value={assessmentData.description}
-              onChange={(e) => setAssessmentData({ ...assessmentData, description: e.target.value })}
-              className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-              rows={4}
+
+            <input
+              type="text"
+              placeholder="Assessment Title"
+              value={assessmentData.title}
+              onChange={(e) => setAssessmentData({ ...assessmentData, title: e.target.value })}
+              className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none"
+              required
             />
-            <button className="px-8 py-3 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-indigo-700 transition-colors">
+
+            <button
+              type="submit"
+              className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-2xl transition-all"
+            >
               Create Assessment
             </button>
           </form>
         </div>
       )}
 
-      {/* ============ ATTENDANCE TAB ============ */}
-      {activeTab === 'attendance' && (
-        <AttendanceSection classes={classes} />
-      )}
-
-      {/* ============ GRADES TAB ============ */}
-      {activeTab === 'grades' && (
-        <GradesSection classes={classes} />
-      )}
-
-      {/* ============ RESOURCES LIBRARY TAB ============ */}
-      {activeTab === 'resources-library' && (
-        <div className="space-y-6">
-          <div className="flex gap-4 items-center mb-6">
-            <Search size={16} className="text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search resources..."
-              className="flex-1 px-4 py-2 bg-white dark:bg-[#0A0C14] border border-slate-100 dark:border-white/5 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {resources.map(res => (
-              <ResourceLibraryCard key={res.id} resource={res} />
-            ))}
-          </div>
+      {/* Placeholder for remaining tabs */}
+      {(activeTab === 'attendance' || activeTab === 'grades' || activeTab === 'resources-library') && (
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-20 text-center">
+          <AlertCircle size={48} className="mx-auto mb-4 text-slate-400" />
+          <p className="text-lg font-light text-slate-600 dark:text-slate-400">This section is under development</p>
+          <p className="text-sm mt-2 text-slate-500">Will be available in the next update</p>
         </div>
       )}
     </div>
   );
 }
 
-// ============ COMPONENTS ============
-
+/* ===================== HELPER COMPONENTS ===================== */
 function StatCard({ icon, label, value, color }) {
   const colors = {
-    indigo: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400',
-    emerald: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-    blue: 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400',
-    amber: 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400',
+    indigo: 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-100 dark:border-indigo-800',
+    emerald: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800',
+    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800',
+    amber: 'bg-amber-50 dark:bg-amber-900/20 border-amber-100 dark:border-amber-800'
   };
 
   return (
-    <div className={`p-8 rounded-2xl border border-slate-100 dark:border-white/5 ${colors[color]}`}>
-      <div className="flex items-center gap-3 mb-4">
+    <div className={`p-6 rounded-3xl border ${colors[color]} hover:shadow-md transition-all`}>
+      <div className="flex items-center gap-3 mb-4 text-slate-600 dark:text-slate-400">
         {icon}
-        <p className="text-[10px] font-bold uppercase tracking-widest">
-          {label}
-        </p>
+        <p className="text-xs font-bold uppercase tracking-widest">{label}</p>
       </div>
-      <h3 className="text-3xl font-light tracking-tight">
-        {value}
-      </h3>
+      <p className="text-4xl font-light text-slate-900 dark:text-white">{value}</p>
     </div>
   );
 }
@@ -462,17 +371,12 @@ function ClassCard({ classData, onSelect }) {
   return (
     <div
       onClick={onSelect}
-      className="p-8 bg-white dark:bg-[#0A0C14] border border-slate-100 dark:border-white/5 rounded-2xl cursor-pointer hover:border-indigo-300 hover:shadow-lg transition-all"
+      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all group"
     >
-      <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">
-        {classData.class?.name}
-      </h3>
-      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-        {classData.subject?.name}
-      </p>
-      <div className="space-y-2 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
-        <p>Periods per week: {classData.periods_per_week}</p>
-        <p>Total marks: {classData.subject?.total_marks}</p>
+      <h3 className="text-lg font-medium text-slate-900 dark:text-white">{classData.class?.name}</h3>
+      <p className="text-slate-500 dark:text-slate-400 mt-1">{classData.subject?.name}</p>
+      <div className="mt-8 pt-6 border-t border-slate-100 dark:border-white/10 text-xs uppercase tracking-widest text-slate-500">
+        Click to manage class →
       </div>
     </div>
   );
@@ -480,132 +384,12 @@ function ClassCard({ classData, onSelect }) {
 
 function ResourceItem({ resource }) {
   return (
-    <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/10 hover:border-indigo-300 dark:hover:border-indigo-500/30 transition-colors">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-1">
-            {resource.title}
-          </h4>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest">
-            {resource.class?.name} • {resource.type}
-          </p>
-        </div>
-        <span className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest ${
-          resource.status === 'approved'
-            ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-            : 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400'
-        }`}>
-          {resource.status}
-        </span>
+    <div className="p-5 border border-slate-200 dark:border-white/10 rounded-2xl hover:border-indigo-300 transition-all">
+      <div className="flex justify-between items-start">
+        <h4 className="font-medium line-clamp-1 pr-4">{resource.title}</h4>
+        <span className="text-[10px] uppercase tracking-widest bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">{resource.type}</span>
       </div>
-    </div>
-  );
-}
-
-function ResourceLibraryCard({ resource }) {
-  return (
-    <div className="p-6 bg-white dark:bg-[#0A0C14] border border-slate-100 dark:border-white/5 rounded-2xl hover:border-indigo-300 transition-colors">
-      <div className="flex items-start justify-between mb-4">
-        <h4 className="text-sm font-medium text-slate-900 dark:text-white flex-1">
-          {resource.title}
-        </h4>
-        <Eye size={16} className="text-indigo-600 cursor-pointer" />
-      </div>
-      <p className="text-[10px] text-slate-500 mb-4 line-clamp-2">
-        {resource.description}
-      </p>
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] text-slate-400 uppercase tracking-widest">
-          {resource.teacher?.full_name}
-        </span>
-        <Download size={14} className="text-indigo-600 cursor-pointer" />
-      </div>
-    </div>
-  );
-}
-
-function AttendanceSection({ classes }) {
-  const [selectedClass, setSelectedClass] = useState(null);
-  const [attendanceDate, setAttendanceDate] = useState(new Date().toISOString().split('T')[0]);
-
-  return (
-    <div className="p-8 bg-white dark:bg-[#0A0C14] border border-slate-100 dark:border-white/5 rounded-3xl">
-      <h2 className="text-[13px] font-bold text-slate-900 dark:text-white uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
-        <Calendar size={16} />
-        Mark Attendance
-      </h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div>
-          <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-            Select Class
-          </label>
-          <select
-            value={selectedClass?.id || ''}
-            onChange={(e) => {
-              const selected = classes.find(c => c.id === e.target.value);
-              setSelectedClass(selected);
-            }}
-            className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-          >
-            <option value="">Select Class</option>
-            {classes.map(c => (
-              <option key={c.id} value={c.id}>
-                {c.class?.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest block mb-3">
-            Date
-          </label>
-          <input
-            type="date"
-            value={attendanceDate}
-            onChange={(e) => setAttendanceDate(e.target.value)}
-            className="w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-          />
-        </div>
-      </div>
-
-      <div className="text-center py-12 text-slate-400">
-        <AlertCircle size={32} className="mx-auto mb-4 opacity-50" />
-        <p className="text-sm">Select a class and date to mark attendance</p>
-      </div>
-    </div>
-  );
-}
-
-function GradesSection({ classes }) {
-  return (
-    <div className="p-8 bg-white dark:bg-[#0A0C14] border border-slate-100 dark:border-white/5 rounded-3xl">
-      <h2 className="text-[13px] font-bold text-slate-900 dark:text-white uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
-        <BarChart3 size={16} />
-        Submit Grades
-      </h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <input
-          type="text"
-          placeholder="Student Name..."
-          className="px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-        />
-        <input
-          type="number"
-          placeholder="Marks Obtained..."
-          className="px-4 py-3 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
-        />
-        <button className="px-6 py-3 bg-indigo-600 text-white text-[10px] font-bold uppercase rounded-xl hover:bg-indigo-700 transition-colors">
-          Submit Grade
-        </button>
-      </div>
-
-      <div className="text-center py-12 text-slate-400">
-        <BarChart3 size={32} className="mx-auto mb-4 opacity-50" />
-        <p className="text-sm">Grade submission interface</p>
-      </div>
+      <p className="text-xs text-slate-500 mt-3 line-clamp-2">{resource.description}</p>
     </div>
   );
 }

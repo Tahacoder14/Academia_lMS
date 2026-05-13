@@ -10,7 +10,7 @@ import {
 } from '@/lib/api';
 import {
   Building2, Users2, BarChart3, TrendingUp, BookOpen, DollarSign,
-  Calendar, ClipboardCheck, AlertCircle, Eye, EyeOff, Loader2
+  Calendar, ClipboardCheck, AlertCircle, Loader2
 } from 'lucide-react';
 
 export default function PrincipalDashboard() {
@@ -50,105 +50,72 @@ export default function PrincipalDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="animate-spin text-indigo-500" size={40} />
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <Loader2 className="animate-spin text-indigo-600" size={48} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-12 pb-20 font-sans font-light animate-fade-in dark:text-slate-200">
-      
-      {/* ============ HEADER ============ */}
-      <div className="border-b border-slate-100 dark:border-white/5 pb-12">
-        <h1 className="text-5xl font-light text-slate-950 dark:text-white tracking-tighter uppercase">
-          Principal Portal
-        </h1>
-        <p className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.4em] mt-4">
-          Institutional Oversight & Analytics
-        </p>
+    <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10 pb-12 px-4 sm:px-6">
+      {/* Header */}
+      <div className="border-b border-slate-200 dark:border-white/10 pb-8">
+        <h1 className="text-3xl sm:text-4xl font-light tracking-tight text-slate-900 dark:text-white">Principal Portal</h1>
+        <p className="text-slate-500 dark:text-slate-400 mt-2">Institutional Oversight & Leadership Dashboard</p>
       </div>
 
-      {/* ============ MASTER STATS GRID ============ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* Master Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <StatCard
-          icon={<Users2 size={20} />}
+          icon={<Users2 size={24} />}
           label="Total Students"
           value={stats?.totalStudents || 0}
-          trend="+12%"
+          trend="+12% this month"
           color="indigo"
         />
         <StatCard
-          icon={<BookOpen size={20} />}
-          label="Faculty Members"
+          icon={<BookOpen size={24} />}
+          label="Faculty"
           value={stats?.totalTeachers || 0}
-          trend="+3%"
+          trend="+3 new"
           color="emerald"
         />
         <StatCard
-          icon={<Building2 size={20} />}
+          icon={<Building2 size={24} />}
           label="Active Classes"
           value={stats?.totalClasses || 0}
-          trend="Stable"
+          trend="On Track"
           color="blue"
         />
         <StatCard
-          icon={<DollarSign size={20} />}
-          label="Fee income (completed)"
-          value={new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', maximumFractionDigits: 0 }).format(finance?.totalIncome || 0)}
-          trend="From finances table"
+          icon={<DollarSign size={24} />}
+          label="Monthly Income"
+          value={`Rs. ${(finance?.totalIncome || 0).toLocaleString('en-PK')}`}
+          trend="Completed"
           color="rose"
         />
       </div>
 
-      {/* ============ FINANCIAL OVERVIEW ============ */}
-      <Section
-        title="Financial Dashboard"
-        isExpanded={expandedSection === 'finance'}
-        onToggle={() => setExpandedSection('finance')}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <FinanceBox
-            label="Total Income"
-            amount={finance?.totalIncome || 0}
-            type="income"
-          />
-          <FinanceBox
-            label="Total Expenses"
-            amount={finance?.totalExpenses || 0}
-            type="expense"
-          />
-          <FinanceBox
-            label="Net Balance"
-            amount={(finance?.totalIncome || 0) - (finance?.totalExpenses || 0)}
-            type="balance"
+      {/* Financial Overview */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8">
+        <h2 className="text-lg font-medium mb-6 flex items-center gap-3">
+          <DollarSign size={20} className="text-emerald-600" />
+          Financial Overview
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <FinanceBox label="Total Income" amount={finance?.totalIncome || 0} type="income" />
+          <FinanceBox label="Total Expenses" amount={finance?.totalExpenses || 0} type="expense" />
+          <FinanceBox 
+            label="Net Balance" 
+            amount={(finance?.totalIncome || 0) - (finance?.totalExpenses || 0)} 
+            type="balance" 
           />
         </div>
+      </div>
 
-        {/* Expense Breakdown */}
-        <div className="mt-8 p-8 bg-white dark:bg-[#0A0C14] rounded-3xl border border-slate-100 dark:border-white/5">
-          <h3 className="text-[13px] font-bold text-slate-900 dark:text-white uppercase tracking-[0.3em] mb-6">
-            Expense Breakdown
-          </h3>
-          <div className="space-y-4">
-            {Object.entries(finance?.byCategoryExpense || {}).map(([category, amount]) => (
-              <ExpenseRow
-                key={category}
-                label={category.replace(/_/g, ' ')}
-                amount={amount}
-                total={finance?.totalExpenses}
-              />
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* ============ CURRICULUM PROGRESS ============ */}
-      <Section
-        title="Curriculum Progress Tracking"
-        isExpanded={expandedSection === 'curriculum'}
-        onToggle={() => setExpandedSection('curriculum')}
-      >
+      {/* Curriculum Progress */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8">
+        <h2 className="text-lg font-medium mb-6">Curriculum Progress</h2>
         <div className="space-y-6">
           {curriculum.length > 0 ? (
             curriculum.map((item) => (
@@ -156,52 +123,37 @@ export default function PrincipalDashboard() {
                 key={item.id}
                 className={item.classes?.name}
                 subject={item.subjects?.name}
-                coordinator={item.coordinator?.full_name}
                 percentage={item.completion_percentage || 0}
                 status={item.status}
               />
             ))
           ) : (
-            <p className="text-slate-400">No curriculum data available</p>
+            <p className="text-slate-400 py-8 text-center">No curriculum progress data available</p>
           )}
         </div>
-      </Section>
+      </div>
 
-      {/* ============ EMPLOYEE DIRECTORY ============ */}
-      <Section
-        title="Employee Directory"
-        isExpanded={expandedSection === 'employees'}
-        onToggle={() => setExpandedSection('employees')}
-      >
+      {/* Employee Directory */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 overflow-hidden">
+        <h2 className="text-lg font-medium mb-6">Employee Directory</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
+          <table className="w-full min-w-full">
             <thead className="border-b border-slate-100 dark:border-white/10">
-              <tr className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+              <tr className="text-xs uppercase tracking-widest text-slate-500">
                 <th className="text-left py-4 px-6">Name</th>
-                <th className="text-left py-4 px-6">Email</th>
                 <th className="text-left py-4 px-6">Role</th>
                 <th className="text-left py-4 px-6">Department</th>
                 <th className="text-left py-4 px-6">Status</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-100 dark:divide-white/10">
               {employees.map((emp) => (
-                <tr
-                  key={emp.id}
-                  className="border-b border-slate-50 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
-                >
-                  <td className="py-4 px-6 text-slate-900 dark:text-white font-medium">
-                    {emp.full_name}
-                  </td>
-                  <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
-                    {emp.email}
-                  </td>
+                <tr key={emp.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                  <td className="py-4 px-6 font-medium">{emp.full_name}</td>
                   <td className="py-4 px-6">
                     <RoleBadge role={emp.role} />
                   </td>
-                  <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
-                    {emp.teacher_department || '-'}
-                  </td>
+                  <td className="py-4 px-6 text-slate-600 dark:text-slate-400">{emp.teacher_department || '—'}</td>
                   <td className="py-4 px-6">
                     <StatusBadge status={emp.status} />
                   </td>
@@ -210,190 +162,93 @@ export default function PrincipalDashboard() {
             </tbody>
           </table>
         </div>
-      </Section>
-
-      {/* ============ RECENT ACTIVITIES ============ */}
-      <Section
-        title="School Activity Feed"
-        isExpanded={expandedSection === 'activities'}
-        onToggle={() => setExpandedSection('activities')}
-      >
-        <div className="space-y-3">
-          {activities.length > 0 ? (
-            activities.map((activity) => (
-              <ActivityItem key={activity.id} activity={activity} />
-            ))
-          ) : (
-            <p className="text-slate-400">No recent activities</p>
-          )}
-        </div>
-      </Section>
+      </div>
     </div>
   );
 }
 
-// ============ COMPONENTS ============
-
+/* ===================== HELPER COMPONENTS ===================== */
 function StatCard({ icon, label, value, trend, color }) {
-  const colorClasses = {
-    indigo: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10',
-    emerald: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10',
-    blue: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10',
-    rose: 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10',
+  const colors = {
+    indigo: 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-100 dark:border-indigo-800',
+    emerald: 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800',
+    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800',
+    rose: 'bg-rose-50 dark:bg-rose-900/20 border-rose-100 dark:border-rose-800',
   };
 
   return (
-    <div className="p-8 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl hover:shadow-lg dark:hover:shadow-none transition-shadow">
-      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 ${colorClasses[color]}`}>
+    <div className={`p-6 rounded-3xl border ${colors[color]} hover:shadow-md transition-all`}>
+      <div className="flex items-center gap-3 mb-5 text-slate-600 dark:text-slate-400">
         {icon}
+        <p className="text-xs font-bold uppercase tracking-widest">{label}</p>
       </div>
-      <p className="text-[10px] font-bold text-slate-500 dark:text-slate-600 uppercase tracking-widest mb-2">
-        {label}
-      </p>
-      <div className="flex items-end justify-between">
-        <h3 className="text-3xl font-light text-slate-950 dark:text-white tracking-tight">
-          {value}
-        </h3>
-        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-          {trend}
-        </span>
-      </div>
+      <p className="text-4xl font-light text-slate-900 dark:text-white">{value}</p>
+      {trend && <p className="text-xs mt-2 text-emerald-600 dark:text-emerald-400">{trend}</p>}
     </div>
   );
 }
 
 function FinanceBox({ label, amount, type }) {
-  const typeClasses = {
-    income: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-    expense: 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400',
-    balance: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400',
+  const styles = {
+    income: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20',
+    expense: 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20',
+    balance: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20',
   };
 
   return (
-    <div className={`p-8 rounded-3xl border border-slate-100 dark:border-white/5 ${typeClasses[type]}`}>
-      <p className="text-[10px] font-bold uppercase tracking-widest mb-4">
-        {label}
-      </p>
-      <h3 className="text-3xl font-light tracking-tight">
-        ${(amount / 1000).toFixed(2)}K
-      </h3>
+    <div className={`p-6 rounded-3xl border border-slate-100 dark:border-white/10 ${styles[type]}`}>
+      <p className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-2">{label}</p>
+      <p className="text-3xl font-light">Rs. {amount.toLocaleString('en-PK')}</p>
     </div>
   );
 }
 
-function Section({ title, isExpanded, onToggle, children }) {
+function CurriculumProgressBar({ className, subject, percentage, status }) {
   return (
-    <div className="p-8 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl">
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between mb-6 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-      >
-        <h2 className="text-[13px] font-bold text-slate-900 dark:text-white uppercase tracking-[0.3em]">
-          {title}
-        </h2>
-        <Eye size={18} className={`transition-transform text-slate-400 dark:text-slate-600 ${isExpanded ? 'opacity-100' : 'opacity-50'}`} />
-      </button>
-      {isExpanded && children}
-    </div>
-  );
-}
-
-function ExpenseRow({ label, amount, total }) {
-  const pct = total ? Math.min(100, (amount / total) * 100) : 0;
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-between text-sm">
-        <span className="text-slate-600 dark:text-slate-400 capitalize">
-          {label}
-        </span>
-        <span className="font-medium text-slate-900 dark:text-white">
-          ${(amount / 1000).toFixed(2)}K ({pct.toFixed(1)}%)
-        </span>
-      </div>
-      <div className="h-2 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-gradient-to-r from-indigo-500 to-purple-500"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
-function CurriculumProgressBar({ className, subject, coordinator, percentage, status }) {
-  const statusColor = {
-    'on_track': 'text-emerald-600 dark:text-emerald-400',
-    'behind': 'text-rose-600 dark:text-rose-400',
-    'ahead': 'text-blue-600 dark:text-blue-400',
-  };
-
-  return (
-    <div className="p-6 bg-slate-50 dark:bg-white/5 rounded-2xl">
+    <div className="p-6 border border-slate-200 dark:border-white/10 rounded-3xl">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h4 className="text-sm font-medium text-slate-900 dark:text-white">
-            {className} - {subject}
-          </h4>
-          <p className="text-[10px] text-slate-500 mt-1">Lead: {coordinator}</p>
+          <p className="font-medium text-slate-900 dark:text-white">{className}</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">{subject}</p>
         </div>
-        <span className={`text-[10px] font-bold uppercase tracking-widest ${statusColor[status] || ''}`}>
-          {status?.replace('_', ' ')}
+        <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full">
+          {status}
         </span>
       </div>
-      <div className="h-3 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden">
+      <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all"
+          className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 transition-all"
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <p className="text-[10px] text-slate-500 mt-2">{percentage}% Complete</p>
+      <p className="text-xs text-right mt-2 text-slate-500">{percentage}% Complete</p>
     </div>
   );
 }
 
 function RoleBadge({ role }) {
-  const roleColors = {
-    teacher: 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400',
-    coordinator: 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400',
-    finance: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-    admin: 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400',
+  const colors = {
+    teacher: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+    coordinator: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300',
+    finance: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300',
   };
 
   return (
-    <span className={`text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-widest ${roleColors[role] || ''}`}>
+    <span className={`text-xs px-3 py-1 rounded-full font-medium uppercase ${colors[role] || 'bg-slate-100 dark:bg-slate-700'}`}>
       {role}
     </span>
   );
 }
 
 function StatusBadge({ status }) {
-  const statusColors = {
-    active: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-    inactive: 'bg-slate-50 dark:bg-slate-500/10 text-slate-600 dark:text-slate-400',
-    suspended: 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400',
+  const colors = {
+    active: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300',
+    inactive: 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300',
   };
 
   return (
-    <span className={`text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-widest ${statusColors[status] || ''}`}>
+    <span className={`text-xs px-3 py-1 rounded-full font-medium uppercase ${colors[status] || ''}`}>
       {status}
     </span>
-  );
-}
-
-function ActivityItem({ activity }) {
-  return (
-    <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/5 hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-colors">
-      <div className="flex items-start gap-4">
-        <AlertCircle size={16} className="text-indigo-500 mt-1 flex-shrink-0" />
-        <div className="flex-1 min-w-0">
-          <p className="text-sm text-slate-900 dark:text-white font-medium line-clamp-2">
-            {activity.title}
-          </p>
-          <p className="text-[10px] text-slate-500 mt-1">
-            {new Date(activity.created_at).toLocaleDateString()}
-          </p>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -78,9 +78,7 @@ export default function FinanceDashboard() {
       }
     };
     load();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [monthFilter]);
 
   const filteredTransactions = useMemo(() => {
@@ -135,82 +133,75 @@ export default function FinanceDashboard() {
 
   if (loading && !profile) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="animate-spin text-indigo-500" size={40} />
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <Loader2 className="animate-spin text-indigo-600" size={48} />
       </div>
     );
   }
 
   if (!FINANCE_CONSOLE_ROLES.includes(profile?.role)) {
     return (
-      <div className="max-w-lg mx-auto mt-20 p-10 rounded-[2rem] border border-slate-100 dark:border-white/10 bg-white dark:bg-slate-900 text-center space-y-4">
-        <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-slate-400">Restricted</p>
-        <h2 className="text-2xl font-light text-slate-950 dark:text-white">Finance console</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          Your role does not include billing, payroll, or fee operations. Contact the principal or administrator.
+      <div className="max-w-md mx-auto mt-12 sm:mt-20 px-6 py-12 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-white/10">
+        <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Access Restricted</p>
+        <h2 className="text-2xl font-light mt-3">Finance Console</h2>
+        <p className="text-slate-500 dark:text-slate-400 mt-4">
+          Your role does not have permission to access financial tools.
         </p>
       </div>
     );
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="animate-spin text-indigo-500" size={40} />
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-12 pb-20 font-sans font-light animate-fade-in dark:text-slate-200 text-slate-950">
-      <div className="flex flex-wrap gap-3 justify-end">
+    <div className="space-y-8 sm:space-y-10 pb-12 sm:pb-20">
+      {/* Quick Link */}
+      <div className="flex justify-end">
         <Link
           href="/dashboard/challans"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-white/15 text-[11px] font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-white/5"
+          className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium border border-slate-200 dark:border-white/10 rounded-2xl hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
         >
-          Fee challans (by class)
+          Fee Challans →
         </Link>
       </div>
-      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-6">
-        <div className="space-y-1">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400 dark:text-slate-500 font-medium">
-            Finance • Fees • Payroll
-          </p>
-          <h1 className="text-4xl font-light text-slate-950 dark:text-white tracking-tight mt-1">
-            Financials & billing
+
+      {/* Main Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end gap-6">
+        <div className="flex-1">
+          <p className="text-xs uppercase tracking-widest text-slate-500">Finance Console</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tighter text-slate-900 dark:text-white mt-1">
+            Financials &amp; Billing
           </h1>
-          <p className="text-slate-400 dark:text-slate-500 text-sm font-light">
-            Live totals from your finances and employee_salaries tables for the selected month.
-          </p>
+          <p className="text-slate-500 dark:text-slate-400 mt-2">Live data for {monthFilter}</p>
         </div>
-        <div className="flex flex-wrap gap-3 items-center">
-          <label className="flex items-center gap-2 px-4 py-3 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 shadow-sm">
-            <Calendar size={14} />
+
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl text-sm">
+            <Calendar size={18} className="text-slate-400" />
             <input
               type="month"
               value={monthFilter}
               onChange={(e) => setMonthFilter(e.target.value)}
-              className="bg-transparent outline-none font-mono text-[12px]"
+              className="bg-transparent outline-none font-mono"
             />
           </label>
+
           <button
-            type="button"
-            onClick={() => alert('Connect challan templates: create rows in a fee_challans table or PDF worker next.')}
-            className="flex items-center gap-2 px-5 py-3 bg-indigo-600 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg hover:bg-indigo-700 transition-all"
+            onClick={() => alert('Connect challan templates in future update')}
+            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-sm font-medium transition-all"
           >
-            <FileText size={14} /> Fee challan
+            <FileText size={18} /> New Challan
           </button>
+
           <button
-            type="button"
             onClick={exportCsv}
-            className="flex items-center gap-2 px-5 py-3 border border-slate-100 dark:border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
+            className="px-5 py-3 border border-slate-200 dark:border-white/10 rounded-2xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
           >
             Export CSV
           </button>
         </div>
       </div>
 
-      <div className="flex gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+      {/* Tabs */}
+      <div className="flex border-b border-slate-200 dark:border-white/10 overflow-x-auto pb-1">
         {[
           { id: 'overview', label: 'Overview' },
           { id: 'ledger', label: 'Ledger' },
@@ -218,131 +209,100 @@ export default function FinanceDashboard() {
         ].map((tab) => (
           <button
             key={tab.id}
-            type="button"
             onClick={() => setActiveTab(tab.id)}
-            className={`px-5 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${
+            className={`px-6 py-3 text-sm font-medium whitespace-nowrap rounded-t-2xl transition-all ${
               activeTab === tab.id
-                ? 'bg-slate-950 dark:bg-indigo-600 text-white'
-                : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-white/5'
+                ? 'bg-white dark:bg-slate-900 border border-b-0 border-slate-200 dark:border-white/10 -mb-px text-slate-900 dark:text-white'
+                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
             {tab.label}
           </button>
         ))}
       </div>
-
+            {/* ==================== OVERVIEW TAB ==================== */}
       {activeTab === 'overview' && (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-[2.5rem] p-10 flex flex-col justify-between shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* Main Income Card */}
+            <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 lg:p-10 flex flex-col">
               <div>
-                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
-                  Completed income ({monthFilter})
-                </p>
-                <div className="flex items-end gap-4 mt-2 flex-wrap">
-                  <h2 className="text-5xl font-light text-slate-950 dark:text-white tracking-tighter">
+                <p className="uppercase text-xs tracking-widest text-slate-500 dark:text-slate-400">Completed Income</p>
+                <div className="flex items-end gap-3 mt-3 flex-wrap">
+                  <h2 className="text-4xl sm:text-5xl font-light tracking-tighter text-slate-900 dark:text-white">
                     {formatPKR(summary?.totalIncome ?? 0)}
                   </h2>
-                  <span
-                    className={`text-[11px] font-black flex items-center gap-1 mb-2 ${
-                      (summary?.netPosition ?? 0) >= 0 ? 'text-emerald-500' : 'text-rose-500'
-                    }`}
-                  >
-                    {(summary?.netPosition ?? 0) >= 0 ? (
-                      <ArrowUpRight size={14} />
-                    ) : (
-                      <ArrowDownRight size={14} />
-                    )}
-                    Net {formatPKR(summary?.netPosition ?? 0)}
+                  <span className={`flex items-center gap-1 text-sm font-medium mb-1 ${
+                    (summary?.netPosition ?? 0) >= 0 ? 'text-emerald-600' : 'text-rose-600'
+                  }`}>
+                    {(summary?.netPosition ?? 0) >= 0 ? <ArrowUpRight size={18} /> : <ArrowDownRight size={18} />}
+                    {formatPKR(summary?.netPosition ?? 0)}
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
-                {(incomeBreakdown.length ? incomeBreakdown : [['No income rows', 0]]).map(([label, value]) => (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
+                {(incomeBreakdown.length ? incomeBreakdown : [['No income data', 0]]).map(([label, value]) => (
                   <FinanceSubStat key={label} label={label} value={formatPKR(value)} />
                 ))}
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-slate-950 dark:from-indigo-950 to-indigo-950 dark:to-indigo-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden flex flex-col items-center justify-center text-center shadow-2xl shadow-indigo-900/20">
-              <div className="relative w-40 h-40 flex items-center justify-center mb-6">
-                <svg className="w-full h-full transform -rotate-90">
-                  <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-white/10" />
+            {/* Recovery Rate Card */}
+            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl p-8 sm:p-10 flex flex-col items-center justify-center text-center shadow-xl">
+              <div className="relative w-36 h-36 sm:w-40 sm:h-40 mb-6">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
+                  <circle cx="80" cy="80" r="70" stroke="currentColor" strokeWidth="14" fill="transparent" className="text-white/10" />
                   <circle
-                    cx="80"
-                    cy="80"
-                    r="70"
+                    cx="80" cy="80" r="70"
                     stroke="currentColor"
-                    strokeWidth="8"
+                    strokeWidth="14"
                     fill="transparent"
                     strokeDasharray={440}
                     strokeDashoffset={440 - (440 * (recoveryPct ?? 0)) / 100}
-                    className="text-indigo-400 transition-all duration-1000"
+                    className="text-indigo-400 transition-all duration-700"
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl font-light">{recoveryPct != null ? `${recoveryPct}%` : '—'}</span>
-                  <span className="text-[9px] uppercase tracking-widest text-indigo-300 font-bold">
-                    Income cleared
-                  </span>
+                  <span className="text-4xl sm:text-5xl font-light">{recoveryPct ?? '—'}%</span>
+                  <span className="text-xs uppercase tracking-widest text-indigo-300 mt-1">Recovery Rate</span>
                 </div>
               </div>
-              <p className="text-slate-300 text-xs font-medium">Completed vs pending fee recognition</p>
-              <p className="text-[10px] text-white/40 mt-1 uppercase tracking-widest font-bold">
-                Pending income {formatPKR(summary?.pendingIncome ?? 0)}
-              </p>
+              <p className="text-sm text-white/70">Pending Income</p>
+              <p className="text-xl font-light mt-1">{formatPKR(summary?.pendingIncome ?? 0)}</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-[2.5rem] p-10 shadow-sm">
+          {/* Bottom Section - Expenses + Payroll */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* Expense Breakdown */}
+            <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 lg:p-10">
               <div className="flex justify-between items-center mb-8">
-                <h3 className="text-lg font-light text-slate-800 dark:text-white">Expense categories</h3>
-                <span className="text-[10px] uppercase tracking-widest font-black text-slate-400">
-                  Total out {formatPKR(summary?.totalExpenses ?? 0)}
-                </span>
+                <h3 className="text-lg font-medium">Expense Categories</h3>
+                <span className="text-sm text-slate-500">Total Expenses: {formatPKR(summary?.totalExpenses ?? 0)}</span>
               </div>
-              <div className="space-y-6">
-                {(expenseBreakdown.length ? expenseBreakdown : [['No expense rows', 0]]).map(([label, value]) => (
+              <div className="space-y-8">
+                {(expenseBreakdown.length ? expenseBreakdown : [['No expense data', 0]]).map(([label, value]) => (
                   <ExpenseItem
                     key={label}
                     label={label}
                     amount={formatPKR(value)}
-                    color="bg-indigo-600"
-                    percent={Math.min(100, summary?.totalExpenses ? Math.round((value / summary.totalExpenses) * 100) : 0)}
+                    percent={summary?.totalExpenses ? Math.round((value / summary.totalExpenses) * 100) : 0}
                   />
                 ))}
               </div>
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-[2.5rem] p-8 shadow-sm">
-                <h3 className="text-[12px] font-bold text-slate-800 dark:text-white uppercase tracking-widest mb-6 flex justify-between items-center">
-                  Payroll snapshot <MoreHorizontal size={16} className="text-slate-300 dark:text-slate-600" />
-                </h3>
-                <div className="flex items-center gap-4 mb-6 text-slate-600 dark:text-slate-300">
-                  <Users size={22} className="text-indigo-500" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400">Net salaries</p>
-                    <p className="text-2xl font-light text-slate-950 dark:text-white">{formatPKR(payrollNet)}</p>
-                  </div>
-                </div>
-                <p className="text-[11px] text-slate-500">{salaries.length} record(s) for {monthFilter}</p>
-              </div>
-
-              <div className="bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-[2.5rem] p-8 flex items-center gap-5">
-                <div className="p-4 bg-white dark:bg-slate-900 rounded-2xl text-indigo-600 dark:text-indigo-400 shadow-sm">
-                  <Landmark size={24} />
+            {/* Payroll Snapshot */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 flex flex-col">
+              <h3 className="uppercase text-xs tracking-widest text-slate-500 mb-6">Payroll Snapshot</h3>
+              <div className="flex items-center gap-5 mb-8">
+                <div className="p-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl">
+                  <Users size={32} className="text-indigo-600" />
                 </div>
                 <div>
-                  <p className="text-[9px] font-black uppercase text-indigo-400 dark:text-indigo-300 tracking-widest flex items-center gap-2">
-                    <Wallet size={12} /> Cash posture
-                  </p>
-                  <h4 className="text-xl font-light text-indigo-900 dark:text-indigo-100 tracking-tight">
-                    {formatPKR(summary?.netPosition ?? 0)}
-                  </h4>
-                  <p className="text-[10px] text-indigo-400/80 mt-1">Income − expenses (completed)</p>
+                  <p className="text-4xl font-light tracking-tight">{formatPKR(payrollNet)}</p>
+                  <p className="text-sm text-slate-500">{salaries.length} employees • {monthFilter}</p>
                 </div>
               </div>
             </div>
@@ -350,147 +310,126 @@ export default function FinanceDashboard() {
         </>
       )}
 
+      {/* ==================== LEDGER TAB ==================== */}
       {activeTab === 'ledger' && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-[2.5rem] shadow-sm overflow-hidden">
-          <div className="p-10 border-b border-slate-50 dark:border-white/5 flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
-            <h3 className="text-xl font-light text-slate-800 dark:text-white">Ledger</h3>
-            <div className="flex flex-wrap gap-3 items-center">
-              <div className="relative w-full sm:w-auto">
-                <Search className="absolute left-3 top-3 text-slate-300 dark:text-slate-600" size={14} />
-                <input
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full sm:w-[220px] pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-medium outline-none focus:ring-1 ring-indigo-200 dark:ring-indigo-500/30 dark:text-slate-300"
-                  placeholder="Search description or category..."
-                />
-              </div>
-              <select
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-                className="px-4 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-300"
-              >
-                <option value="all">All types</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-              </select>
-              <button
-                type="button"
-                className="p-3 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-white/10 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400"
-                title="Filters use search + type"
-              >
-                <Filter size={18} />
-              </button>
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl overflow-hidden">
+          {/* Filter Bar */}
+          <div className="p-6 sm:p-8 border-b flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-3.5 text-slate-400" size={18} />
+              <input
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search description or category..."
+                className="w-full pl-12 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl focus:border-indigo-500 outline-none text-sm"
+              />
             </div>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="px-5 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-2xl text-sm"
+            >
+              <option value="all">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
           </div>
+
           <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-full table-auto">
+            <table className="w-full min-w-[700px]">
               <thead>
-                <tr className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
-                  <th className="px-4 py-4 sm:px-6">Date</th>
-                  <th className="px-4 py-4 sm:px-6">Category / description</th>
-                  <th className="px-4 py-4 sm:px-6">Type</th>
-                  <th className="px-4 py-4 sm:px-6">Amount</th>
-                  <th className="px-4 py-4 sm:px-6">Status</th>
-                  <th className="px-4 py-4 sm:px-6 text-right">Recorded by</th>
+                <tr className="text-xs uppercase font-medium text-slate-500 bg-slate-50 dark:bg-slate-800 border-b">
+                  <th className="px-6 py-5 text-left">Date</th>
+                  <th className="px-6 py-5 text-left">Description</th>
+                  <th className="px-6 py-5 text-left">Type</th>
+                  <th className="px-6 py-5 text-left">Amount</th>
+                  <th className="px-6 py-5 text-left">Status</th>
+                  <th className="px-6 py-5 text-right">Recorded By</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50 dark:divide-white/5 text-sm">
-                {filteredTransactions.length === 0 && (
+              <tbody className="divide-y divide-slate-100 dark:divide-white/10">
+                {filteredTransactions.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-4 py-12 sm:px-6 text-center text-slate-400 text-[13px]">
-                      No finance rows for this month. Insert into `finances` in Supabase to populate.
+                    <td colSpan={6} className="px-6 py-16 text-center text-slate-400">
+                      No transactions found for this month
                     </td>
                   </tr>
+                ) : (
+                  filteredTransactions.map((t) => (
+                    <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                      <td className="px-6 py-5 font-mono text-sm text-slate-500">{t.transaction_date || '—'}</td>
+                      <td className="px-6 py-5">
+                        <p className="font-medium text-slate-900 dark:text-white">{t.category || 'Uncategorized'}</p>
+                        <p className="text-sm text-slate-500 line-clamp-1">{t.description || '—'}</p>
+                      </td>
+                      <td className="px-6 py-5 capitalize font-medium">{t.transaction_type}</td>
+                      <td className="px-6 py-5 font-semibold">{formatPKR(t.amount)}</td>
+                      <td className="px-6 py-5">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
+                          t.status === 'completed' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400'
+                        }`}>
+                          {t.status === 'completed' ? <CheckCircle2 size={14} /> : <Clock size={14} />}
+                          {t.status || 'pending'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-5 text-right text-sm text-slate-500">{t.recorded_by?.full_name || '—'}</td>
+                    </tr>
+                  ))
                 )}
-                {filteredTransactions.map((t) => (
-                  <tr key={t.id} className="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors text-slate-600 dark:text-slate-400">
-                    <td className="px-4 py-4 sm:px-6 font-mono text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">
-                      {t.transaction_date || '—'}
-                    </td>
-                    <td className="px-4 py-4 sm:px-6 break-words">
-                      <p className="font-bold text-slate-950 dark:text-slate-200 text-xs">{t.category || 'Uncategorized'}</p>
-                      <p className="text-[10px] font-medium text-slate-400 dark:text-slate-500">{t.description || '—'}</p>
-                    </td>
-                    <td className="px-4 py-4 sm:px-6 font-medium text-[11px] capitalize">{t.transaction_type}</td>
-                    <td className="px-4 py-4 sm:px-6 font-bold text-slate-950 dark:text-slate-200">{formatPKR(t.amount)}</td>
-                    <td className="px-4 py-4 sm:px-6">
-                      <span
-                        className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-tighter ${
-                          t.status === 'completed'
-                            ? 'text-emerald-500 dark:text-emerald-400'
-                            : 'text-slate-300 dark:text-slate-600'
-                        }`}
-                      >
-                        {t.status === 'completed' ? (
-                          <>
-                            <CheckCircle2 size={12} /> Done
-                          </>
-                        ) : (
-                          <>
-                            <Clock size={12} /> {t.status || 'pending'}
-                          </>
-                        )}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 sm:px-6 text-right text-xs text-slate-500 break-words">
-                      {t.recorded_by?.full_name || '—'}
-                    </td>
-                  </tr>
-                ))}
               </tbody>
             </table>
           </div>
         </div>
       )}
 
+      {/* ==================== PAYROLL TAB ==================== */}
       {activeTab === 'payroll' && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-[2.5rem] shadow-sm overflow-hidden">
-          <div className="p-10 border-b border-slate-50 dark:border-white/5 flex justify-between items-center">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl overflow-hidden">
+          <div className="p-6 sm:p-8 border-b flex justify-between items-center">
             <div>
-              <h3 className="text-xl font-light text-slate-800 dark:text-white">Payroll register</h3>
-              <p className="text-[11px] text-slate-400 mt-2">Mapped from `employee_salaries` for {monthFilter}</p>
+              <h3 className="text-xl font-light">Payroll Register</h3>
+              <p className="text-sm text-slate-500 mt-1">{monthFilter}</p>
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-              Net {formatPKR(payrollNet)}
-            </span>
+            <div className="text-right">
+              <p className="text-2xl font-light">{formatPKR(payrollNet)}</p>
+              <p className="text-xs text-slate-500">Net Payroll</p>
+            </div>
           </div>
+
           <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-full table-auto">
+            <table className="w-full min-w-[700px]">
               <thead>
-                <tr className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
-                  <th className="px-4 py-4 sm:px-6">Staff</th>
-                  <th className="px-4 py-4 sm:px-6">Basic</th>
-                  <th className="px-4 py-4 sm:px-6">Allowances</th>
-                  <th className="px-4 py-4 sm:px-6">Deductions</th>
-                  <th className="px-4 py-4 sm:px-6">Net</th>
-                  <th className="px-4 py-4 sm:px-6 text-right">Status</th>
+                <tr className="bg-slate-50 dark:bg-slate-800 text-xs uppercase font-medium text-slate-500 border-b">
+                  <th className="px-6 py-5 text-left">Employee</th>
+                  <th className="px-6 py-5 text-left">Basic Salary</th>
+                  <th className="px-6 py-5 text-left">Allowances</th>
+                  <th className="px-6 py-5 text-left">Deductions</th>
+                  <th className="px-6 py-5 text-left">Net Salary</th>
+                  <th className="px-6 py-5 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50 dark:divide-white/5 text-sm">
-                {salaries.length === 0 && (
+              <tbody className="divide-y divide-slate-100 dark:divide-white/10">
+                {salaries.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-4 py-12 sm:px-6 text-center text-slate-400 text-[13px]">
-                      No payroll rows for this month.
-                    </td>
+                    <td colSpan={6} className="px-6 py-16 text-center text-slate-400">No payroll data for this month</td>
                   </tr>
+                ) : (
+                  salaries.map((row) => (
+                    <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                      <td className="px-6 py-5">
+                        <p className="font-medium">{row.employee?.full_name || 'Staff'}</p>
+                        <p className="text-xs text-slate-500">{row.employee?.role || '—'}</p>
+                      </td>
+                      <td className="px-6 py-5">{formatPKR(row.basic_salary)}</td>
+                      <td className="px-6 py-5">{formatPKR(row.allowances)}</td>
+                      <td className="px-6 py-5">{formatPKR(row.deductions)}</td>
+                      <td className="px-6 py-5 font-semibold text-lg">{formatPKR(row.net_salary)}</td>
+                      <td className="px-6 py-5 text-right">
+                        <span className="text-xs font-medium uppercase tracking-widest text-emerald-600">{row.status || 'Processed'}</span>
+                      </td>
+                    </tr>
+                  ))
                 )}
-                {salaries.map((row) => (
-                  <tr key={row.id} className="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors">
-                    <td className="px-4 py-4 sm:px-6">
-                      <p className="font-bold text-slate-950 dark:text-slate-200 text-xs">{row.employee?.full_name || 'Staff'}</p>
-                      <p className="text-[10px] text-slate-400 uppercase tracking-widest">{row.employee?.role || '—'}</p>
-                    </td>
-                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-400">{formatPKR(row.basic_salary)}</td>
-                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-400">{formatPKR(row.allowances)}</td>
-                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-400">{formatPKR(row.deductions)}</td>
-                    <td className="px-4 py-4 sm:px-6 font-bold text-slate-950 dark:text-slate-200">{formatPKR(row.net_salary)}</td>
-                    <td className="px-4 py-4 sm:px-6 text-right">
-                      <span className="text-[10px] font-black uppercase tracking-tighter text-indigo-600 dark:text-indigo-400">
-                        {row.status || '—'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
               </tbody>
             </table>
           </div>
@@ -500,24 +439,28 @@ export default function FinanceDashboard() {
   );
 }
 
+/* ===================== HELPER COMPONENTS ===================== */
 function FinanceSubStat({ label, value }) {
   return (
     <div className="space-y-1">
-      <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">{label}</p>
-      <h4 className="text-xl font-light text-slate-700 dark:text-slate-300">{value}</h4>
+      <p className="text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400">{label}</p>
+      <p className="text-xl sm:text-2xl font-light text-slate-900 dark:text-white">{value}</p>
     </div>
   );
 }
 
-function ExpenseItem({ label, amount, color, percent }) {
+function ExpenseItem({ label, amount, percent }) {
   return (
     <div className="space-y-3">
-      <div className="flex justify-between items-end font-bold uppercase tracking-widest text-[10px]">
-        <span className="text-slate-400 dark:text-slate-500">{label}</span>
-        <span className="text-slate-800 dark:text-slate-200">{amount}</span>
+      <div className="flex justify-between items-end">
+        <span className="font-medium text-slate-700 dark:text-slate-300">{label}</span>
+        <span className="font-medium">{amount}</span>
       </div>
-      <div className="w-full h-1.5 bg-slate-50 dark:bg-white/5 rounded-full overflow-hidden">
-        <div style={{ width: `${percent}%` }} className={`h-full ${color} rounded-full`} />
+      <div className="h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-indigo-600 rounded-full transition-all duration-300" 
+          style={{ width: `${percent}%` }}
+        />
       </div>
     </div>
   );

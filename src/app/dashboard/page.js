@@ -31,21 +31,20 @@ function formatPKR(n) {
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
-  const[stats, setStats] = useState({ students: 0, faculty: 0, classes: 0 });
-  const[financeMonth, setFinanceMonth] = useState(null);
+  const [stats, setStats] = useState({ students: 0, faculty: 0, classes: 0 });
+  const [financeMonth, setFinanceMonth] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const month = useMemo(() => new Date().toISOString().slice(0, 7),[]);
+  const month = useMemo(() => new Date().toISOString().slice(0, 7), []);
 
-  // Move all hooks above the conditional rendering
   const role = profile?.role || 'student';
-  const isFinanceView =['superadmin', 'principal', 'admin', 'finance'].includes(role);
+  const isFinanceView = ['superadmin', 'principal', 'admin', 'finance'].includes(role);
   const greeting = profile?.full_name?.split(' ')[0] || 'Member';
 
   const quickLinks = useMemo(() => {
-    const base =[{ href: '/dashboard', label: 'Overview', icon: LayoutGrid }];
+    const base = [{ href: '/dashboard', label: 'Overview', icon: LayoutGrid }];
     if (role === 'student') {
-      return[
+      return [
         ...base,
         { href: '/dashboard/students', label: 'My learning', icon: GraduationCap },
         { href: '/dashboard/challans', label: 'Fee challan', icon: Receipt },
@@ -54,7 +53,7 @@ export default function Dashboard() {
       ];
     }
     if (role === 'teacher') {
-      return[
+      return [
         ...base,
         { href: '/dashboard/teacher', label: 'Teaching', icon: GraduationCap },
         { href: '/dashboard/attendance', label: 'Attendance', icon: CheckCircle2 },
@@ -63,7 +62,7 @@ export default function Dashboard() {
       ];
     }
     if (role === 'coordinator') {
-      return[
+      return [
         ...base,
         { href: '/dashboard/academic', label: 'Academic', icon: FileText },
         { href: '/dashboard/coordinator', label: 'Coordinator', icon: Users2 },
@@ -73,7 +72,7 @@ export default function Dashboard() {
       ];
     }
     if (['principal', 'admin'].includes(role)) {
-      return[
+      return [
         ...base,
         { href: '/dashboard/principal', label: 'Leadership', icon: Building2 },
         { href: '/dashboard/academic', label: 'Academic', icon: FileText },
@@ -85,7 +84,7 @@ export default function Dashboard() {
       ];
     }
     if (role === 'finance') {
-      return[
+      return [
         ...base,
         { href: '/dashboard/financials', label: 'Financials', icon: Wallet },
         { href: '/dashboard/challans', label: 'Challans', icon: Receipt },
@@ -93,7 +92,7 @@ export default function Dashboard() {
       ];
     }
     if (role === 'superadmin') {
-      return[
+      return [
         ...base,
         { href: '/dashboard/superadmin', label: 'Superadmin', icon: Building2 },
         { href: '/dashboard/users', label: 'Users', icon: Users2 },
@@ -154,101 +153,105 @@ export default function Dashboard() {
     fetchData();
   }, [month]);
 
-  const loadingClasses = isLoading ? 'opacity-50 pointer-events-none' : '';
-
   return (
-    <div className={`space-y-6 sm:space-y-7 pb-6 sm:pb-8 font-sans ${loadingClasses}`}>
+    <div className="space-y-8 pb-8 min-h-screen">
+      {/* Loading Overlay */}
       {isLoading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/90 dark:bg-slate-950/90 backdrop-blur-sm">
           <div className="text-center space-y-4">
-            <Loader2 size={40} className="mx-auto animate-spin text-indigo-600 dark:text-indigo-400" />
-            <p className="text-[10px] tracking-[0.5em] text-slate-400 dark:text-slate-500 uppercase font-bold">
-              Establishing session…
-            </p>
+            <Loader2 size={48} className="mx-auto animate-spin text-indigo-600" />
+            <p className="text-xs tracking-widest text-slate-400 font-medium">LOADING DASHBOARD...</p>
           </div>
         </div>
       )}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 border-b border-slate-100 dark:border-white/5 pb-4 sm:pb-5">
-        <div className="space-y-1">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-light text-slate-950 dark:text-white tracking-tighter leading-tight uppercase">
+
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 dark:border-white/10 pb-6">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-light tracking-tighter text-slate-900 dark:text-white">
             Hello, {greeting}
           </h1>
-          <div className="text-[9px] sm:text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.35em] flex items-center gap-1.5 flex-wrap">
-            <span className="inline-flex h-1 w-1 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981]" />
-            Institutional authorization: {role}
+          <div className="flex items-center gap-2 mt-2">
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+            <p className="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">
+              {role.toUpperCase()} • INSTITUTIONAL AUTHORIZATION
+            </p>
           </div>
+        </div>
+        <div className="text-right text-xs text-slate-500 dark:text-slate-400">
+          {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         {isFinanceView ? (
           <>
-            <Widget title="Active students" value={stats.students} icon={<Users2 size={18} />} sub="Enrolled profiles" />
-            <Widget title="Faculty & coordinators" value={stats.faculty} icon={<LayoutGrid size={18} />} sub="Teaching staff" />
-            <Widget title="Classes" value={stats.classes} icon={<Building2 size={18} />} sub="Timetable anchors" />
-            <div className="p-4 sm:p-5 lg:p-6 rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-800 dark:from-indigo-900 dark:to-slate-900 text-white shadow-lg border border-white/10">
-              <Wallet size={16} className="text-indigo-200 mb-3 sm:mb-4" />
-              <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold text-white/60">Completed income (this month)</p>
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-light tracking-tight mt-1.5">{formatPKR(financeMonth?.totalIncome)}</h2>
-              <p className="text-[8px] sm:text-[9px] mt-2.5 sm:mt-3 text-white/50 leading-relaxed">
-                Pulled from your <code className="text-indigo-200">finances</code> table.
-              </p>
-              <Link
-                href="/dashboard/financials"
-                className="mt-3 sm:mt-4 inline-flex text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-white/90 hover:text-white border-b border-white/30"
-              >
-                Open financial console →
+            <Widget title="Active Students" value={stats.students} icon={<Users2 size={22} />} sub="Enrolled Profiles" />
+            <Widget title="Faculty & Coordinators" value={stats.faculty} icon={<LayoutGrid size={22} />} sub="Teaching Staff" />
+            <Widget title="Total Classes" value={stats.classes} icon={<Building2 size={22} />} sub="Timetable Anchors" />
+            
+            <div className="p-6 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-white/10 shadow-xl flex flex-col">
+              <Wallet size={28} className="text-indigo-300 mb-4" />
+              <p className="uppercase text-xs tracking-[2px] text-white/60 font-medium">Income This Month</p>
+              <h2 className="text-3xl font-light mt-2 tracking-tighter">{formatPKR(financeMonth?.totalIncome)}</h2>
+              <Link href="/dashboard/financials" className="mt-auto pt-6 text-xs font-medium flex items-center gap-2 hover:text-indigo-300 transition-colors">
+                Open Financial Console →
               </Link>
             </div>
           </>
         ) : (
           <>
-            <Widget title="My classes" value={stats.students || stats.classes || '—'} icon={<GraduationCap size={18} />} sub={role === 'student' ? 'Enrolled sections' : 'Assignments'} />
-            <Widget title="Attendance focus" value="—" icon={<CheckCircle2 size={18} />} sub="Mark from teacher or attendance hub" />
-            <Widget title="Tasks" value="—" icon={<Clock size={18} />} sub="Check coordinator notices" isAlert />
-            <Widget title="Messages" value="—" icon={<MessageSquare size={18} />} sub="Notifications feed" />
+            <Widget title="My Classes" value={stats.students || stats.classes || '—'} icon={<GraduationCap size={22} />} sub={role === 'student' ? 'Enrolled Sections' : 'Assignments'} />
+            <Widget title="Attendance" value="—" icon={<CheckCircle2 size={22} />} sub="Mark from Teacher Portal" />
+            <Widget title="Tasks" value="—" icon={<Clock size={22} />} sub="Coordinator Notices" isAlert />
+            <Widget title="Messages" value="—" icon={<MessageSquare size={22} />} sub="Notification Center" />
           </>
         )}
       </div>
 
+      {/* Quick Links */}
       <div>
-        <h2 className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mb-2.5 sm:mb-3">Quick Links</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
+        <h2 className="text-xs font-bold uppercase tracking-[2px] text-slate-500 dark:text-slate-400 mb-4">Quick Access</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {quickLinks.map((item) => {
             const Icon = item.icon;
             return (
               <Link
-                key={item.href + item.label}
+                key={item.href}
                 href={item.href}
-                className="flex flex-col items-start gap-1.5 p-2.5 sm:p-3 rounded-lg sm:rounded-xl border border-slate-100 dark:border-white/10 bg-white dark:bg-slate-900/80 hover:border-indigo-200 dark:hover:border-indigo-500/40 hover:shadow-sm transition-all min-h-[52px] sm:min-h-[60px]"
+                className="group flex flex-col items-start gap-3 p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl hover:border-indigo-300 dark:hover:border-indigo-500 hover:shadow-md transition-all duration-200"
               >
-                <span className="p-1 sm:p-1.5 rounded-md sm:rounded-lg bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300">
-                  <Icon size={14} strokeWidth={1.5} />
-                </span>
-                <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-slate-700 dark:text-slate-200 line-clamp-2">{item.label}</span>
+                <div className="p-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
+                  <Icon size={20} strokeWidth={1.8} />
+                </div>
+                <span className="font-medium text-sm text-slate-700 dark:text-slate-200 line-clamp-2">{item.label}</span>
               </Link>
             );
           })}
         </div>
       </div>
 
-      <div className="min-h-[120px] sm:min-h-[140px] bg-white dark:bg-[#0A0F1E] border border-slate-100 dark:border-white/5 rounded-xl sm:rounded-2xl p-5 sm:p-6 flex flex-col justify-center text-center">
-        <Signal size={24} strokeWidth={1} className="mx-auto text-indigo-400 mb-2 sm:mb-3" />
-        <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-slate-600 dark:text-slate-300 font-bold opacity-80">
-          Live modules load from your <span className="text-indigo-500">menus</span> table.
+      {/* Footer Info Bar */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 text-center">
+        <Signal size={28} className="mx-auto text-indigo-500 mb-3" />
+        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-widest">
+          LIVE MODULES ARE LOADED FROM YOUR MENUS TABLE
         </p>
       </div>
     </div>
   );
 }
 
-function Widget({ title, value, sub, icon, isAlert }) {
+function Widget({ title, value, sub, icon, isAlert = false }) {
   return (
-    <div className="p-4 sm:p-5 lg:p-6 bg-white dark:bg-[#0A0F1E] border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
-      <div className={`p-2 sm:p-2.5 bg-slate-50 dark:bg-white/5 w-fit rounded-lg sm:rounded-xl mb-3 sm:mb-4 ${isAlert ? 'text-rose-500' : 'text-slate-900 dark:text-slate-100'}`}>{icon}</div>
-      <p className="text-[8px] sm:text-[9px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest leading-none">{title}</p>
-      <h2 className="text-xl sm:text-2xl lg:text-3xl font-light text-slate-950 dark:text-white tracking-tighter mt-1.5">{value}</h2>
-      <p className="text-[8px] sm:text-[9px] mt-3 text-slate-400 font-bold uppercase tracking-[0.15em]">{sub}</p>
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+      <div className={`w-fit p-3 rounded-2xl mb-5 ${isAlert ? 'bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400' : 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300'}`}>
+        {icon}
+      </div>
+      <p className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">{title}</p>
+      <h3 className="text-4xl font-light tracking-tighter text-slate-900 dark:text-white mt-2">{value}</h3>
+      <p className="text-xs mt-4 text-slate-500 dark:text-slate-400 font-medium">{sub}</p>
     </div>
   );
 }

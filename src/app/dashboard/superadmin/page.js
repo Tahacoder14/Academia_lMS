@@ -58,146 +58,171 @@ export default function SuperadminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center py-24">
-        <Loader2 className="animate-spin text-indigo-500" size={40} />
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <Loader2 className="animate-spin text-indigo-600" size={48} />
       </div>
     );
   }
 
   if (role !== 'superadmin') {
     return (
-      <div className="p-8 rounded-3xl border border-rose-200 bg-rose-50 text-rose-800 text-sm">
-        This console is restricted to superadmin accounts.
+      <div className="max-w-md mx-auto mt-12 p-8 rounded-3xl border border-rose-200 bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-300 text-center">
+        This console is restricted to superadmin accounts only.
       </div>
     );
   }
 
   const tiles = [
-    { href: '/dashboard/users', label: 'Global users', value: counts.users, icon: Users2, sub: 'All roles' },
-    { href: '/dashboard/institutions', label: 'Institutions', value: counts.institutions, icon: School, sub: 'Tenants / schools' },
-    { href: '/dashboard/principal', label: 'Leadership view', value: counts.classes, icon: Building2, sub: 'Classes (all)' },
-    { href: '/dashboard/financials', label: 'Finance pulse', value: finance ? `PKR ${Math.round(finance.totalIncome || 0)}` : '—', icon: Wallet, sub: 'This month income' },
+    { href: '/dashboard/users', label: 'Global Users', value: counts.users, icon: Users2, sub: 'All roles' },
+    { href: '/dashboard/institutions', label: 'Institutions', value: counts.institutions, icon: School, sub: 'Schools & Tenants' },
+    { href: '/dashboard/principal', label: 'Leadership View', value: counts.classes, icon: Building2, sub: 'All Classes' },
+    { href: '/dashboard/financials', label: 'Finance Pulse', value: finance ? `Rs. ${Math.round(finance.totalIncome || 0)}` : '—', icon: Wallet, sub: 'This Month Income' },
   ];
 
   return (
-    <div className="space-y-10 pb-20">
-      <div className="relative overflow-hidden rounded-[2.5rem] border border-indigo-200/60 dark:border-indigo-500/30 bg-gradient-to-br from-indigo-600 via-slate-900 to-slate-950 text-white p-8 sm:p-12">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="relative z-10 max-w-2xl space-y-4">
-          <p className="text-[10px] font-black uppercase tracking-[0.45em] text-indigo-200">Superadmin control plane</p>
-          <h1 className="text-3xl sm:text-4xl font-light tracking-tight">Operate every school from one place</h1>
-          <p className="text-sm text-indigo-100/90 leading-relaxed">
-            Unlock institution profiles, audit users, and validate finance signals before campuses go live. Pair this with Supabase RLS for production isolation.
+    <div className="space-y-8 sm:space-y-10 pb-12 sm:pb-20 max-w-7xl mx-auto px-4 sm:px-6">
+      {/* Hero Banner */}
+      <div className="relative overflow-hidden rounded-3xl border border-indigo-200/60 dark:border-indigo-500/30 bg-gradient-to-br from-indigo-600 via-slate-900 to-slate-950 text-white p-8 sm:p-12 lg:p-16">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full -translate-y-1/3 translate-x-1/3" />
+        <div className="relative z-10 max-w-2xl space-y-5">
+          <p className="text-xs font-bold uppercase tracking-[0.5em] text-indigo-200">SUPERADMIN CONTROL PLANE</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tighter leading-tight">
+            Operate Every School from One Place
+          </h1>
+          <p className="text-indigo-100/90 text-[15px] leading-relaxed">
+            Manage institutions, audit users, monitor finance, and control platform-wide settings.
           </p>
-          <div className="flex flex-wrap gap-3 pt-2">
+          <div className="flex flex-wrap gap-3 pt-4">
             <Link
               href="/dashboard/reports"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-indigo-700 text-[11px] font-bold uppercase tracking-widest hover:bg-indigo-50"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white text-indigo-700 text-sm font-medium hover:bg-indigo-50 transition-all"
             >
-              <BarChart3 size={16} /> Reports
+              <BarChart3 size={18} /> View Reports
             </Link>
             <Link
               href="/dashboard/institutions"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-white/30 text-[11px] font-bold uppercase tracking-widest hover:bg-white/10"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl border border-white/30 text-sm font-medium hover:bg-white/10 transition-all"
             >
-              <Shield size={16} /> Institutions
+              <Shield size={18} /> Manage Institutions
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Tiles */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {tiles.map((t) => {
           const Icon = t.icon;
           return (
             <Link
               key={t.href}
               href={t.href}
-              className="group p-8 rounded-3xl border border-slate-100 dark:border-white/10 bg-white dark:bg-slate-900 hover:border-indigo-300 dark:hover:border-indigo-500/40 hover:shadow-xl transition-all"
+              className="group p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 hover:border-indigo-300 dark:hover:border-indigo-500/40 hover:shadow-xl transition-all duration-300"
             >
               <div className="flex items-center justify-between mb-6">
-                <span className="p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300">
-                  <Icon size={20} />
-                </span>
-                <ArrowRight size={18} className="text-slate-300 group-hover:text-indigo-500 transition-colors" />
+                <div className="p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300">
+                  <Icon size={24} />
+                </div>
+                <ArrowRight size={20} className="text-slate-300 group-hover:text-indigo-500 transition-colors" />
               </div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t.label}</p>
-              <p className="text-3xl font-light text-slate-900 dark:text-white mt-2">{t.value}</p>
-              <p className="text-[10px] text-slate-400 mt-3 uppercase tracking-widest">{t.sub}</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">{t.label}</p>
+              <p className="text-3xl sm:text-4xl font-light text-slate-900 dark:text-white mt-2">{t.value}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-4 tracking-wide">{t.sub}</p>
             </Link>
           );
         })}
       </div>
 
+      {/* Bottom Sections */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="p-8 rounded-3xl border border-slate-100 dark:border-white/10 bg-white dark:bg-slate-900">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
-            <GraduationCap size={20} className="text-indigo-500" /> Deployment checklist
+        {/* Deployment Checklist */}
+        <div className="p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900">
+          <h2 className="text-lg font-semibold flex items-center gap-2 mb-6">
+            <GraduationCap size={22} className="text-indigo-500" />
+            Deployment Checklist
           </h2>
-          <ul className="text-sm text-slate-600 dark:text-slate-300 space-y-2 list-disc list-inside">
-            <li>Set <code className="text-indigo-600">NEXT_PUBLIC_SUPABASE_URL</code> and <code className="text-indigo-600">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> on Vercel or Railway.</li>
-            <li>Run <code className="text-indigo-600">SQL.md</code> in Supabase SQL editor (institutions, fee_challans, menus).</li>
-            <li>Keep service role keys only on the server (Edge Functions) — never in the browser.</li>
+          <ul className="space-y-4 text-sm text-slate-600 dark:text-slate-300">
+            <li className="flex gap-3">
+              <span className="text-emerald-500 mt-1">•</span>
+              Set <code className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">NEXT_PUBLIC_SUPABASE_URL</code> and Anon Key
+            </li>
+            <li className="flex gap-3">
+              <span className="text-emerald-500 mt-1">•</span>
+              Run all setup SQL scripts in Supabase
+            </li>
+            <li className="flex gap-3">
+              <span className="text-emerald-500 mt-1">•</span>
+              Never expose service role keys on client side
+            </li>
           </ul>
         </div>
-        <div className="p-8 rounded-3xl border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-slate-800/50">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Menu expansion</h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-            Sidebar items are read from the <strong>menus</strong> table. Add or reorder rows to give teachers, coordinators, and students more entry points without redeploying.
+
+        {/* Menu & Quick Links */}
+        <div className="p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900">
+          <h2 className="text-lg font-semibold mb-3">Dynamic Menu System</h2>
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+            Sidebar navigation is powered by the <strong>menus</strong> table. 
+            Add, edit or reorder items without redeploying the application.
           </p>
-          <Link href="/dashboard/users" className="inline-flex mt-4 text-indigo-600 dark:text-indigo-400 text-sm font-semibold">
-            Open user matrix →
+          <Link href="/dashboard/users" className="inline-flex mt-6 text-indigo-600 dark:text-indigo-400 font-medium items-center gap-2 hover:underline">
+            Manage Users →
           </Link>
         </div>
       </div>
 
+      {/* Demo Requests + Signals */}
       <div className="grid gap-6 xl:grid-cols-3">
-        <div className="p-8 rounded-3xl border border-slate-100 dark:border-white/10 bg-white dark:bg-slate-900 shadow-sm">
-          <div className="flex items-center gap-3 text-indigo-500">
-            <MessageSquare size={20} />
-            <h3 className="text-base font-semibold text-slate-900 dark:text-white">Demo requests</h3>
+        {/* Demo Requests */}
+        <div className="xl:col-span-1 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900">
+          <div className="flex items-center gap-3 mb-6">
+            <MessageSquare size={22} className="text-indigo-500" />
+            <h3 className="font-semibold">Demo Requests</h3>
           </div>
-          <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">Requests submitted from the homepage dialog appear here for superadmin review.</p>
+          <p className="text-sm text-slate-500 mb-6">Recent requests from homepage</p>
+
           {demoRequests.length > 0 ? (
-            <div className="mt-6 space-y-4">
-              {demoRequests.map((request) => (
-                <div key={request.id} className="rounded-3xl border border-slate-200/70 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-950">
-                  <div className="flex items-center justify-between gap-3 text-sm text-slate-600 dark:text-slate-300">
-                    <span>{request.name}</span>
-                    <span className="rounded-full bg-slate-200/80 px-3 py-1 text-xs uppercase tracking-[0.18em] text-slate-700 dark:bg-slate-800 dark:text-slate-300">{request.role}</span>
+            <div className="space-y-4">
+              {demoRequests.map((req, i) => (
+                <div key={i} className="border border-slate-200 dark:border-white/10 rounded-2xl p-5 bg-slate-50 dark:bg-slate-900">
+                  <div className="flex justify-between items-start">
+                    <p className="font-medium">{req.name}</p>
+                    <span className="text-xs bg-slate-200 dark:bg-slate-700 px-3 py-1 rounded-full">{req.role}</span>
                   </div>
-                  <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{request.organization}</p>
-                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{request.message}</p>
-                  <div className="mt-3 text-xs text-slate-400 uppercase tracking-[0.18em]">{new Date(request.createdAt).toLocaleString()}</div>
+                  <p className="text-sm mt-2 text-slate-600 dark:text-slate-300">{req.organization}</p>
+                  <p className="text-xs text-slate-500 mt-3 line-clamp-2">{req.message}</p>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="mt-6 rounded-3xl border border-dashed border-slate-200/80 bg-slate-50 p-6 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-400">
-              No demo requests have been received yet.
+            <div className="text-center py-12 text-slate-500 border border-dashed rounded-3xl">
+              No demo requests yet
             </div>
           )}
         </div>
 
-        <div className="lg:col-span-2 p-8 rounded-3xl border border-slate-100 dark:border-white/10 bg-white dark:bg-slate-900 shadow-sm">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 text-indigo-500">
-              <Clock3 size={20} />
+        {/* Leadership Signals */}
+        <div className="xl:col-span-2 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Clock3 size={22} className="text-indigo-500" />
               <div>
-                <p className="text-base font-semibold text-slate-900 dark:text-white">Leadership signals</p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Monitor usage, finance, and approvals from a single dashboard.</p>
+                <h3 className="font-semibold">Leadership Signals</h3>
+                <p className="text-sm text-slate-500">Platform-wide overview</p>
               </div>
             </div>
-            <Link href="/dashboard/reports" className="text-sm font-semibold text-indigo-600 dark:text-indigo-300">View detailed reports →</Link>
+            <Link href="/dashboard/reports" className="text-indigo-600 dark:text-indigo-400 text-sm font-medium hover:underline">
+              Detailed Reports →
+            </Link>
           </div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-3xl border border-slate-200/80 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-950">
-              <p className="text-sm uppercase tracking-[0.2em] text-slate-400">Pending users</p>
-              <p className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">{counts.users}</p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6">
+              <p className="uppercase text-xs tracking-widest text-slate-500">Total Users</p>
+              <p className="text-5xl font-light mt-3">{counts.users}</p>
             </div>
-            <div className="rounded-3xl border border-slate-200/80 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-950">
-              <p className="text-sm uppercase tracking-[0.2em] text-slate-400">Current institutions</p>
-              <p className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">{counts.institutions}</p>
+            <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6">
+              <p className="uppercase text-xs tracking-widest text-slate-500">Institutions</p>
+              <p className="text-5xl font-light mt-3">{counts.institutions}</p>
             </div>
           </div>
         </div>
