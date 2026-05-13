@@ -17,21 +17,42 @@
   }
 
   * {
-    /* Fixed: Using standard border-slate-200 instead of the broken border-border */
-    @apply border-slate-100 dark:border-slate-800 outline-none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   html {
     scroll-behavior: smooth;
     min-height: 100%;
+    width: 100%;
     overflow-x: hidden;
+    color-scheme: light dark;
   }
 
   body {
     font-family: var(--font-manrope);
-    @apply bg-white text-slate-600 antialiased overflow-x-hidden;
-    letter-spacing: -0.015em; /* ProfessionalIndustry spacing */
+    @apply bg-slate-50 text-slate-900 antialiased overflow-x-hidden;
+    letter-spacing: -0.015em; /* Professional spacing */
     min-height: 100vh;
+    width: 100%;
+  }
+
+  main {
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  body::selection {
+    @apply bg-indigo-200 text-slate-900;
   }
 
   img, svg {

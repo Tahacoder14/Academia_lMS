@@ -16,8 +16,10 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="description" content="A modern, responsive school management dashboard with worksheets, fee challans, attendance, and academic oversight." />
       </head>
-      <body className={`${nunito.variable} font-sans antialiased bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 font-light`}>
+      <body className={`${nunito.variable} font-sans antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-light`}>
         <ErrorBoundary>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <ToastProvider>

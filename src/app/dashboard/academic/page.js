@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { 
   CheckCircle2, XCircle, TrendingUp, PlusCircle, BookOpen, 
-  Search, Eye as EyeIcon, UploadCloud, Send ,BarChart3 , AlertCircle, X as XIcon
-  , CheckCircle as CheckCircleIcon
+  Search, Eye as EyeIcon, UploadCloud, Send, BarChart3, AlertCircle, X as XIcon,
+  CheckCircle as CheckCircleIcon, Edit2, Trash2, Download
 } from 'lucide-react';
 
 // --- MAIN GATEKEEPER COMPONENT ---
@@ -288,8 +288,8 @@ function CoordinatorHub({ userData }) {
         </div>
       </header>
 
-      <div className="flex gap-4">
-        <div className="relative flex-1 max-w-sm">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="relative flex-1 min-w-0">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16}/>
           <input 
             value={search}
@@ -301,7 +301,7 @@ function CoordinatorHub({ userData }) {
         <select 
           value={selectedClass}
           onChange={(e) => setSelectedClass(e.target.value)}
-          className="px-6 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full text-[11px] font-bold uppercase tracking-widest outline-none focus:border-indigo-400 transition-all cursor-pointer"
+          className="w-full sm:w-auto px-6 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full text-[11px] font-bold uppercase tracking-widest outline-none focus:border-indigo-400 transition-all cursor-pointer"
         >
           <option value="all">All Classes</option>
           {classes.map(cls => <option key={cls} value={cls}>{cls}</option>)}
@@ -355,14 +355,14 @@ function SubmissionCard({ submission, onApprove, onReject }) {
         </div>
       </div>
 
-      <div className="flex gap-3 pt-6 border-t border-slate-200 dark:border-slate-700">
-        <button onClick={onApprove} className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all">
+      <div className="flex flex-col gap-3 pt-6 border-t border-slate-200 dark:border-slate-700 sm:flex-row">
+        <button onClick={onApprove} className="w-full sm:flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all">
           <CheckCircle2 size={14} className="inline mr-2"/> Approve
         </button>
-        <button onClick={() => setShowRejectReason(!showRejectReason)} className="flex-1 bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all">
+        <button onClick={() => setShowRejectReason(!showRejectReason)} className="w-full sm:flex-1 bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all">
           <XCircle size={14} className="inline mr-2"/> Reject
         </button>
-        <button className="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-3 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all">
+        <button className="w-full sm:flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-3 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all">
           <EyeIcon size={14} className="inline mr-2"/> Preview
         </button>
       </div>
