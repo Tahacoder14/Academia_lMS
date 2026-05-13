@@ -59,6 +59,11 @@ export default function ChallansPage() {
   }, [classId, me?.role]);
 
   const openChallan = (row, studentRow) => {
+    if (!row) {
+      alert('Unable to open challan. The challan record was not created successfully.');
+      return;
+    }
+
     const html = buildFeeChallanHtml({
       institution: inst,
       student: studentRow,
@@ -66,15 +71,21 @@ export default function ChallansPage() {
       periodLabel: row.period_label || row.period || '',
       challanNo: row.challan_no || row.id,
     });
+
     const w = window.open('', '_blank');
-    if (w) {
-      w.document.write(html);
-      w.document.close();
+    if (!w) {
+      alert('Popup blocked: please allow popups to see the generated challan.');
+      return;
     }
+    w.document.write(html);
+    w.document.close();
   };
 
   const studentSelfGenerate = async () => {
-    if (!me?.id) return;
+    if (!me?.id) {
+      alert('Unable to generate challan: user not authenticated.');
+      return;
+    }
     try {
       const challanNo = `CH-${period}-${me.roll_number || me.id.slice(0, 8)}`;
       const row = await createFeeChallan({
@@ -85,10 +96,12 @@ export default function ChallansPage() {
         challan_no: challanNo,
         status: 'issued',
       });
+      if (!row) throw new Error('No challan record was returned from the server.');
       const rows = await getFeeChallansForStudent(me.id);
       setList(rows);
       openChallan(row, me);
     } catch (e) {
+      console.error('Challan create failed:', e);
       alert(e?.message || 'Create fee_challans table (see SQL.md) or check RLS policies.');
     }
   };

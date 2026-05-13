@@ -355,12 +355,12 @@ export default function FinanceDashboard() {
           <div className="p-10 border-b border-slate-50 dark:border-white/5 flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
             <h3 className="text-xl font-light text-slate-800 dark:text-white">Ledger</h3>
             <div className="flex flex-wrap gap-3 items-center">
-              <div className="relative">
+              <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-3 top-3 text-slate-300 dark:text-slate-600" size={14} />
                 <input
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-medium outline-none focus:ring-1 ring-indigo-200 dark:ring-indigo-500/30 dark:text-slate-300 min-w-[200px]"
+                  className="w-full sm:w-[220px] pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-medium outline-none focus:ring-1 ring-indigo-200 dark:ring-indigo-500/30 dark:text-slate-300"
                   placeholder="Search description or category..."
                 />
               </div>
@@ -383,37 +383,37 @@ export default function FinanceDashboard() {
             </div>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-[720px]">
+            <table className="w-full text-left min-w-full table-auto">
               <thead>
                 <tr className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
-                  <th className="px-10 py-5">Date</th>
-                  <th className="px-10 py-5">Category / description</th>
-                  <th className="px-10 py-5">Type</th>
-                  <th className="px-10 py-5">Amount</th>
-                  <th className="px-10 py-5">Status</th>
-                  <th className="px-10 py-5 text-right">Recorded by</th>
+                  <th className="px-4 py-4 sm:px-6">Date</th>
+                  <th className="px-4 py-4 sm:px-6">Category / description</th>
+                  <th className="px-4 py-4 sm:px-6">Type</th>
+                  <th className="px-4 py-4 sm:px-6">Amount</th>
+                  <th className="px-4 py-4 sm:px-6">Status</th>
+                  <th className="px-4 py-4 sm:px-6 text-right">Recorded by</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50 dark:divide-white/5 text-sm">
                 {filteredTransactions.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-10 py-16 text-center text-slate-400 text-[13px]">
+                    <td colSpan={6} className="px-4 py-12 sm:px-6 text-center text-slate-400 text-[13px]">
                       No finance rows for this month. Insert into `finances` in Supabase to populate.
                     </td>
                   </tr>
                 )}
                 {filteredTransactions.map((t) => (
                   <tr key={t.id} className="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors text-slate-600 dark:text-slate-400">
-                    <td className="px-10 py-6 font-mono text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">
+                    <td className="px-4 py-4 sm:px-6 font-mono text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">
                       {t.transaction_date || '—'}
                     </td>
-                    <td className="px-10 py-6">
+                    <td className="px-4 py-4 sm:px-6 break-words">
                       <p className="font-bold text-slate-950 dark:text-slate-200 text-xs">{t.category || 'Uncategorized'}</p>
                       <p className="text-[10px] font-medium text-slate-400 dark:text-slate-500">{t.description || '—'}</p>
                     </td>
-                    <td className="px-10 py-6 font-medium text-[11px] capitalize">{t.transaction_type}</td>
-                    <td className="px-10 py-6 font-bold text-slate-950 dark:text-slate-200">{formatPKR(t.amount)}</td>
-                    <td className="px-10 py-6">
+                    <td className="px-4 py-4 sm:px-6 font-medium text-[11px] capitalize">{t.transaction_type}</td>
+                    <td className="px-4 py-4 sm:px-6 font-bold text-slate-950 dark:text-slate-200">{formatPKR(t.amount)}</td>
+                    <td className="px-4 py-4 sm:px-6">
                       <span
                         className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-tighter ${
                           t.status === 'completed'
@@ -432,7 +432,7 @@ export default function FinanceDashboard() {
                         )}
                       </span>
                     </td>
-                    <td className="px-10 py-6 text-right text-xs text-slate-500">
+                    <td className="px-4 py-4 sm:px-6 text-right text-xs text-slate-500 break-words">
                       {t.recorded_by?.full_name || '—'}
                     </td>
                   </tr>
@@ -455,36 +455,36 @@ export default function FinanceDashboard() {
             </span>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-[640px]">
+            <table className="w-full text-left min-w-full table-auto">
               <thead>
                 <tr className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
-                  <th className="px-10 py-5">Staff</th>
-                  <th className="px-10 py-5">Basic</th>
-                  <th className="px-10 py-5">Allowances</th>
-                  <th className="px-10 py-5">Deductions</th>
-                  <th className="px-10 py-5">Net</th>
-                  <th className="px-10 py-5 text-right">Status</th>
+                  <th className="px-4 py-4 sm:px-6">Staff</th>
+                  <th className="px-4 py-4 sm:px-6">Basic</th>
+                  <th className="px-4 py-4 sm:px-6">Allowances</th>
+                  <th className="px-4 py-4 sm:px-6">Deductions</th>
+                  <th className="px-4 py-4 sm:px-6">Net</th>
+                  <th className="px-4 py-4 sm:px-6 text-right">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50 dark:divide-white/5 text-sm">
                 {salaries.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-10 py-16 text-center text-slate-400 text-[13px]">
+                    <td colSpan={6} className="px-4 py-12 sm:px-6 text-center text-slate-400 text-[13px]">
                       No payroll rows for this month.
                     </td>
                   </tr>
                 )}
                 {salaries.map((row) => (
                   <tr key={row.id} className="hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors">
-                    <td className="px-10 py-6">
+                    <td className="px-4 py-4 sm:px-6">
                       <p className="font-bold text-slate-950 dark:text-slate-200 text-xs">{row.employee?.full_name || 'Staff'}</p>
                       <p className="text-[10px] text-slate-400 uppercase tracking-widest">{row.employee?.role || '—'}</p>
                     </td>
-                    <td className="px-10 py-6 text-slate-600 dark:text-slate-400">{formatPKR(row.basic_salary)}</td>
-                    <td className="px-10 py-6 text-slate-600 dark:text-slate-400">{formatPKR(row.allowances)}</td>
-                    <td className="px-10 py-6 text-slate-600 dark:text-slate-400">{formatPKR(row.deductions)}</td>
-                    <td className="px-10 py-6 font-bold text-slate-950 dark:text-slate-200">{formatPKR(row.net_salary)}</td>
-                    <td className="px-10 py-6 text-right">
+                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-400">{formatPKR(row.basic_salary)}</td>
+                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-400">{formatPKR(row.allowances)}</td>
+                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-400">{formatPKR(row.deductions)}</td>
+                    <td className="px-4 py-4 sm:px-6 font-bold text-slate-950 dark:text-slate-200">{formatPKR(row.net_salary)}</td>
+                    <td className="px-4 py-4 sm:px-6 text-right">
                       <span className="text-[10px] font-black uppercase tracking-tighter text-indigo-600 dark:text-indigo-400">
                         {row.status || '—'}
                       </span>

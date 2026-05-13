@@ -14,11 +14,14 @@ const nunito = Nunito_Sans({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </head>
       <body className={`${nunito.variable} font-sans antialiased bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 font-light`}>
         <ErrorBoundary>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <ToastProvider>
-              <div className="min-h-screen uppercase-tracking-widest">
+              <div className="min-h-screen uppercase-tracking-widest overflow-x-hidden">
                 {children}
               </div>
             </ToastProvider>

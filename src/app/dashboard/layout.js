@@ -20,6 +20,7 @@ export default function DashboardLayout({ children }) {
   const [mounted, setMounted] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   
   const [userData, setUserData] = useState({ id: '', full_name: 'Member', role: 'Student', email: '', avatar_url: '' });
   const [menuItems, setMenuItems] = useState([]);
@@ -77,13 +78,13 @@ export default function DashboardLayout({ children }) {
 
   return (
     <ErrorBoundary>
-      <div className="flex min-h-screen bg-[#FDFDFF] dark:bg-[#020617] font-sans antialiased text-slate-800 font-light transition-colors duration-500">
+      <div className="flex min-h-screen bg-[#FDFDFF] dark:bg-[#020617] font-sans antialiased text-slate-800 font-light transition-colors duration-500 overflow-x-hidden">
       
       {/* 1. SIDEBAR: HIGH CONTRAST & RUNNING LINE */}
       <aside 
-        className={`bg-white dark:bg-slate-900 border-r border-slate-200/60 dark:border-white/5 fixed h-full z-40 transition-all duration-700 ease-in-out ${
-          isCollapsed ? 'w-20' : 'w-72'
-        }`}
+        className={`bg-white dark:bg-slate-900 border-r border-slate-200/60 dark:border-white/5 fixed inset-y-0 z-40 transition-all duration-700 ease-in-out ${
+          isCollapsed ? 'w-20 lg:w-20' : 'w-72 lg:w-72'
+        } ${isMobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'} lg:static lg:translate-x-0`}
       >
         <div className="h-16 flex items-center justify-between px-8 border-b border-slate-50 dark:border-white/5">
           {!isCollapsed && (
@@ -115,6 +116,7 @@ export default function DashboardLayout({ children }) {
                 <Link 
                   key={item.id} 
                   href={item.route} 
+                  onClick={() => setIsMobileOpen(false)}
                   className={`group flex items-center gap-5 px-5 py-2 text-[11px] transition-all relative ${
                     active 
                     ? "text-indigo-700 font-semibold" 
@@ -142,16 +144,23 @@ export default function DashboardLayout({ children }) {
         </nav>
       </aside>
 
+      {/* Mobile overlay to hide sidebar on small screens */}
+      <div
+        className={`fixed inset-0 z-30 bg-black/30 backdrop-blur-sm transition-opacity lg:hidden ${isMobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setIsMobileOpen(false)}
+      />
+
       {/* 2. MAIN AREA */}
-      <div className={`flex-1 transition-all duration-700 ${isCollapsed ? 'ml-20' : 'ml-72'}`}>
-        
-        <header className="h-16 px-10 flex items-center justify-between sticky top-0 bg-white/30 dark:bg-slate-950/20 backdrop-blur-xl z-30 border-b border-slate-100 dark:border-white/5">
-          <div className="flex items-center gap-6">
-             {/* Calendar text now black-ish (Slate-700) for visibility */}
+      <div className={`flex-1 transition-all duration-700 ${isCollapsed ? 'lg:ml-20' : 'lg:ml-72'} ml-0`}>        
+        <header className="h-auto min-h-[64px] px-4 sm:px-6 lg:px-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl z-30 border-b border-slate-100 dark:border-white/5">
+          <div className="flex flex-wrap items-center gap-4">
+             <button onClick={() => setIsMobileOpen((state) => !state)} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800 lg:hidden">
+               {isMobileOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
+             </button>
              <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] font-semibold text-slate-700 dark:text-slate-400">
                 <Calendar size={13} strokeWidth={1} className="text-indigo-600" /> {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}
              </div>
-             <span className="w-px h-3 bg-slate-200 dark:bg-slate-700"></span>
+             <span className="hidden sm:block w-px h-3 bg-slate-200 dark:bg-slate-700"></span>
              <h2 className="text-slate-900 dark:text-white text-[10px] font-bold uppercase tracking-[0.4em]">
                 {pathname.split('/').pop()?.replace('-', ' ') || 'Protocol'}
              </h2>

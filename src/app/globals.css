@@ -10,14 +10,27 @@
 
 @layer base {
   * {
+    box-sizing: border-box;
     /* Fixed: Using standard border-slate-200 instead of the broken border-border */
     @apply border-slate-100 dark:border-slate-800 outline-none;
   }
   
+  html {
+    scroll-behavior: smooth;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     font-family: var(--font-manrope);
     @apply bg-white text-slate-600 antialiased overflow-x-hidden;
     letter-spacing: -0.015em; /* ProfessionalIndustry spacing */
+    min-height: 100vh;
+  }
+
+  img, svg {
+    max-width: 100%;
+    height: auto;
   }
 
   /* Thin, Architectural fonts for headings */
