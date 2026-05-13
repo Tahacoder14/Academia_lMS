@@ -19,13 +19,11 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#ffffff" />
         <meta name="description" content="A modern, responsive school management dashboard with worksheets, fee challans, attendance, and academic oversight." />
       </head>
-      <body className={`${nunito.variable} font-sans antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-light`}>
+      <body className={`${nunito.variable} font-sans antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-light m-0 p-0 overflow-x-hidden`}>
         <ErrorBoundary>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <ToastProvider>
-              <div className="min-h-screen uppercase-tracking-widest overflow-x-hidden">
-                {children}
-              </div>
+              {children}
             </ToastProvider>
           </ThemeProvider>
         </ErrorBoundary>

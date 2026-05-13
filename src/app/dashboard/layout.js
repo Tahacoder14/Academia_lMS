@@ -78,9 +78,9 @@ export default function DashboardLayout({ children }) {
 
   return (
     <ErrorBoundary>
-      <div className="flex min-h-screen bg-[#FDFDFF] dark:bg-[#020617] font-sans antialiased text-slate-800 font-light transition-colors duration-500 overflow-x-hidden">
+      <div className="flex h-screen w-screen bg-[#FDFDFF] dark:bg-[#020617] font-sans antialiased text-slate-800 font-light transition-colors duration-500 overflow-hidden">
       
-      {/* 1. SIDEBAR: HIGH CONTRAST & RUNNING LINE */}
+      {/* 1. SIDEBAR */}
       <aside 
         className={`bg-white dark:bg-slate-900 border-r border-slate-200/60 dark:border-white/5 fixed inset-y-0 z-40 transition-all duration-700 ease-in-out ${
           isCollapsed ? 'w-20 lg:w-20' : 'w-72 lg:w-72'
@@ -151,8 +151,8 @@ export default function DashboardLayout({ children }) {
       />
 
       {/* 2. MAIN AREA */}
-      <div className={`flex flex-col flex-1 transition-all duration-700 ${isCollapsed ? 'lg:ml-20' : 'lg:ml-72'} ml-0`}>        
-        <header className="h-auto min-h-[60px] px-3 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sticky top-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl z-30 border-b border-slate-100 dark:border-white/5">
+      <div className={`flex flex-col flex-1 h-screen overflow-hidden transition-all duration-700 ${isCollapsed ? 'lg:ml-20' : 'lg:ml-72'} ml-0`}>        
+        <header className="h-[60px] shrink-0 px-3 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sticky top-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl z-30 border-b border-slate-100 dark:border-white/5">
           <div className="flex flex-wrap items-center gap-4">
              <button onClick={() => setIsMobileOpen((state) => !state)} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800 lg:hidden">
                {isMobileOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
@@ -216,7 +216,7 @@ export default function DashboardLayout({ children }) {
           </div>
         </header>
 
-        <main className="flex-1 px-2 sm:px-5 lg:px-8 py-4 sm:py-5 lg:py-6 relative w-full overflow-y-auto">
+        <main className="flex-1 px-2 sm:px-4 lg:px-6 py-3 sm:py-4 lg:py-5 relative w-full overflow-y-auto">
            {/* DECORATIVE LIGHT GLASS BLOBS - FIXED POSITION */}
            <div className="fixed top-0 right-0 w-[600px] h-[600px] bg-indigo-50/30 rounded-full blur-[150px] -z-10 pointer-events-none opacity-100 dark:opacity-0"></div>
            
@@ -226,7 +226,7 @@ export default function DashboardLayout({ children }) {
                <p className="text-[10px] uppercase tracking-[0.6em] font-medium animate-pulse text-slate-500">Establishing Session</p>
              </div>
            ) : (
-             <div className="animate-in fade-in duration-700 w-full">
+             <div className="animate-in fade-in duration-500 w-full">
                 {children}
              </div>
            )}

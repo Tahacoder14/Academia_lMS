@@ -89,18 +89,18 @@ function PrincipalHub({ userData }) {
     : submissions.filter(s => s.status === filter);
 
   return (
-    <div className="space-y-8 sm:space-y-10 animate-fade-in font-sans font-light pb-10">
-      <header className="flex flex-col gap-3 sm:gap-6 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 dark:border-slate-800 pb-5 sm:pb-8">
+    <div className="space-y-6 sm:space-y-7 animate-fade-in font-sans font-light pb-6 sm:pb-8">
+      <header className="flex flex-col gap-2 sm:gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 dark:border-slate-800 pb-4 sm:pb-5">
         <div className="space-y-1 min-w-0">
-          <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.5em] text-slate-400">Principal Control</p>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-900 dark:text-white tracking-tight uppercase">Academic Oversight</h1>
+          <p className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.4em] text-slate-400">Principal Control</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-light text-slate-900 dark:text-white tracking-tight uppercase">Academic Oversight</h1>
         </div>
-        <button className="w-full sm:w-auto px-4 sm:px-5 py-2 sm:py-2.5 bg-[#001026] hover:bg-black text-white rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest shadow-xl transition-all whitespace-nowrap">
-           <TrendingUp size={15} className="inline mr-2"/> Full Analytics
+        <button className="w-full sm:w-auto px-4 sm:px-5 py-2 sm:py-2.5 bg-[#001026] hover:bg-black text-white rounded-full text-[8px] sm:text-[9px] font-bold uppercase tracking-widest shadow-lg transition-all whitespace-nowrap">
+           <TrendingUp size={14} className="inline mr-1.5"/> Full Analytics
         </button>
       </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
         <MetricBox title="Total Submissions" value={stats.total} trend="This Month" color="indigo" />
         <MetricBox title="Pending Review" value={stats.pending} trend="Urgent" color="rose" />
         <MetricBox title="Approved" value={stats.approved} trend="✓ Verified" color="emerald" />
@@ -202,13 +202,13 @@ function MetricBox({ title, value, trend, color }) {
   };
 
   return (
-    <div className={`p-5 sm:p-7 lg:p-8 ${bgColors[color]} border border-slate-200 dark:border-slate-700 rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-lg transition-all duration-500 hover:-translate-y-1`}>
-      <div className="flex flex-col gap-3 sm:gap-4 justify-between items-start mb-4 sm:mb-6 lg:flex-row lg:items-center">
-        <div className={`p-2.5 sm:p-3 rounded-lg sm:rounded-xl ${bgColors[color]}`}><BarChart3 size={16} strokeWidth={1.5}/></div>
-        <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-tighter px-2 sm:px-3 py-1 rounded-md ${bgColors[color]}`}>{trend}</span>
+    <div className={`p-4 sm:p-5 lg:p-6 ${bgColors[color]} border border-slate-200 dark:border-slate-700 rounded-lg sm:rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5`}>
+      <div className="flex flex-col gap-2.5 sm:gap-3 justify-between items-start mb-3 sm:mb-4 lg:flex-row lg:items-center">
+        <div className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl ${bgColors[color]}`}><BarChart3 size={14} strokeWidth={1.5}/></div>
+        <span className={`text-[7px] sm:text-[8px] font-black uppercase tracking-tighter px-2 sm:px-3 py-0.5 sm:py-1 rounded-md ${bgColors[color]}`}>{trend}</span>
       </div>
-      <p className="text-[8px] sm:text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{title}</p>
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-900 dark:text-white tracking-tighter mt-2">{value}</h2>
+      <p className="text-[7px] sm:text-[8px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{title}</p>
+      <h2 className="text-lg sm:text-2xl lg:text-3xl font-light text-slate-900 dark:text-white tracking-tighter mt-1.5">{value}</h2>
     </div>
   );
 }
