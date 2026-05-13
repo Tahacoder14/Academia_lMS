@@ -38,18 +38,18 @@ export default function AttendanceHub() {
 
   if (role === 'teacher' || role === 'coordinator') {
     return (
-      <div className="max-w-2xl space-y-8">
+      <div className="max-w-2xl space-y-6 sm:space-y-8">
         <div>
-          <h1 className="text-3xl font-light text-slate-900 dark:text-white uppercase tracking-tight">Attendance</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-900 dark:text-white uppercase tracking-tight">Attendance</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-2 text-[10px] sm:text-sm">
             Marking happens per class and date inside the teaching workspace.
           </p>
         </div>
         <Link
           href="/dashboard/teacher"
-          className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-indigo-600 text-white text-[11px] font-bold uppercase tracking-widest hover:bg-indigo-700"
+          className="inline-flex items-center gap-3 px-5 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-2xl bg-indigo-600 text-white text-[9px] sm:text-[11px] font-bold uppercase tracking-widest hover:bg-indigo-700 transition-all"
         >
-          <GraduationCap size={18} /> Open teacher portal → Attendance tab
+          <GraduationCap size={16} /> Open teacher portal → Attendance tab
         </Link>
       </div>
     );
@@ -57,26 +57,26 @@ export default function AttendanceHub() {
 
   if (role === 'student') {
     return (
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <div>
-          <h1 className="text-3xl font-light text-slate-900 dark:text-white uppercase tracking-tight">My attendance</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">Latest records synced from your classes.</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-900 dark:text-white uppercase tracking-tight">My attendance</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-2 text-[10px] sm:text-sm">Latest records synced from your classes.</p>
         </div>
-        <div className="rounded-3xl border border-slate-100 dark:border-white/10 overflow-hidden bg-white dark:bg-slate-900">
+        <div className="rounded-2xl sm:rounded-3xl border border-slate-100 dark:border-white/10 overflow-hidden bg-white dark:bg-slate-900">
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead className="bg-slate-50 dark:bg-white/5 text-[10px] uppercase tracking-widest text-slate-400">
+            <table className="min-w-full text-[11px] sm:text-sm">
+              <thead className="bg-slate-50 dark:bg-white/5 text-[9px] sm:text-[10px] uppercase tracking-widest text-slate-400">
                 <tr>
-                  <th className="text-left p-4">Date</th>
-                  <th className="text-left p-4">Class</th>
-                  <th className="text-left p-4">Subject</th>
-                  <th className="text-left p-4">Status</th>
+                  <th className="text-left p-3 sm:p-4">Date</th>
+                  <th className="text-left p-3 sm:p-4">Class</th>
+                  <th className="text-left p-3 sm:p-4">Subject</th>
+                  <th className="text-left p-3 sm:p-4">Status</th>
                 </tr>
               </thead>
             <tbody>
               {rows.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-10 text-center text-slate-400">
+                  <td colSpan={4} className="p-8 sm:p-10 text-center text-slate-400 text-[10px] sm:text-sm">
                     No attendance rows yet.
                   </td>
                 </tr>

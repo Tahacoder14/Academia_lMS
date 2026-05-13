@@ -157,7 +157,7 @@ export default function Dashboard() {
   const loadingClasses = isLoading ? 'opacity-50 pointer-events-none' : '';
 
   return (
-    <div className={`space-y-10 sm:space-y-12 pb-20 font-sans px-1 sm:px-0 ${loadingClasses}`}>
+    <div className={`space-y-8 sm:space-y-10 pb-10 sm:pb-12 font-sans ${loadingClasses}`}>
       {isLoading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
           <div className="text-center space-y-4">
@@ -168,34 +168,34 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 dark:border-white/5 pb-8 sm:pb-12">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 border-b border-slate-100 dark:border-white/5 pb-6 sm:pb-8">
         <div className="space-y-2">
-          <h1 className="text-3xl sm:text-[44px] font-light text-slate-950 dark:text-white tracking-tighter leading-tight uppercase">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-950 dark:text-white tracking-tighter leading-tight uppercase">
             Hello, {greeting}
           </h1>
-          <div className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.35em] flex items-center gap-3 flex-wrap">
-            <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]" />
+          <div className="text-[10px] sm:text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.35em] flex items-center gap-2 flex-wrap">
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
             Institutional authorization: {role}
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
         {isFinanceView ? (
           <>
             <Widget title="Active students" value={stats.students} icon={<Users2 size={18} />} sub="Enrolled profiles" />
             <Widget title="Faculty & coordinators" value={stats.faculty} icon={<LayoutGrid size={18} />} sub="Teaching staff" />
             <Widget title="Classes" value={stats.classes} icon={<Building2 size={18} />} sub="Timetable anchors" />
-            <div className="p-8 sm:p-10 rounded-[2rem] sm:rounded-[3rem] bg-gradient-to-br from-slate-900 to-indigo-800 dark:from-indigo-900 dark:to-slate-900 text-white shadow-xl border border-white/10">
-              <Wallet size={20} className="text-indigo-200 mb-6" />
-              <p className="text-[9px] uppercase tracking-[0.35em] font-bold text-white/60">Completed income (this month)</p>
-              <h2 className="text-2xl sm:text-3xl font-light tracking-tight mt-2">{formatPKR(financeMonth?.totalIncome)}</h2>
-              <p className="text-[10px] mt-4 text-white/50 leading-relaxed">
+            <div className="p-5 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-900 to-indigo-800 dark:from-indigo-900 dark:to-slate-900 text-white shadow-xl border border-white/10">
+              <Wallet size={18} className="text-indigo-200 mb-4 sm:mb-6" />
+              <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] font-bold text-white/60">Completed income (this month)</p>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-light tracking-tight mt-2">{formatPKR(financeMonth?.totalIncome)}</h2>
+              <p className="text-[9px] sm:text-[10px] mt-3 sm:mt-4 text-white/50 leading-relaxed">
                 Pulled from your <code className="text-indigo-200">finances</code> table.
               </p>
               <Link
                 href="/dashboard/financials"
-                className="mt-6 inline-flex text-[10px] font-bold uppercase tracking-widest text-white/90 hover:text-white border-b border-white/30"
+                className="mt-4 sm:mt-6 inline-flex text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-white/90 hover:text-white border-b border-white/30"
               >
                 Open financial console →
               </Link>
@@ -212,29 +212,29 @@ export default function Dashboard() {
       </div>
 
       <div>
-        <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.35em] mb-4">Shortcuts</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+        <h2 className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-[0.35em] mb-3 sm:mb-4">Quick Links</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
           {quickLinks.map((item) => {
             const Icon = item.icon;
             return (
               <Link
                 key={item.href + item.label}
                 href={item.href}
-                className="flex items-center gap-3 p-4 rounded-2xl border border-slate-100 dark:border-white/10 bg-white dark:bg-slate-900/80 hover:border-indigo-200 dark:hover:border-indigo-500/40 hover:shadow-md transition-all min-h-[72px]"
+                className="flex flex-col items-start gap-2 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-100 dark:border-white/10 bg-white dark:bg-slate-900/80 hover:border-indigo-200 dark:hover:border-indigo-500/40 hover:shadow-md transition-all min-h-[60px] sm:min-h-[72px]"
               >
-                <span className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300">
-                  <Icon size={18} />
+                <span className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300">
+                  <Icon size={16} />
                 </span>
-                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-700 dark:text-slate-200">{item.label}</span>
+                <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-widest text-slate-700 dark:text-slate-200 line-clamp-2">{item.label}</span>
               </Link>
             );
           })}
         </div>
       </div>
 
-      <div className="min-h-[200px] sm:min-h-[240px] bg-white dark:bg-[#0A0F1E] border border-slate-100 dark:border-white/5 rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-12 flex flex-col justify-center text-center">
-        <Signal size={32} strokeWidth={1} className="mx-auto text-indigo-400 mb-4" />
-        <p className="text-[10px] uppercase tracking-[0.45em] text-slate-600 dark:text-slate-300 font-bold opacity-80">
+      <div className="min-h-[140px] sm:min-h-[180px] bg-white dark:bg-[#0A0F1E] border border-slate-100 dark:border-white/5 rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 flex flex-col justify-center text-center">
+        <Signal size={28} strokeWidth={1} className="mx-auto text-indigo-400 mb-3 sm:mb-4" />
+        <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-slate-600 dark:text-slate-300 font-bold opacity-80">
           Live modules load from your <span className="text-indigo-500">menus</span> table.
         </p>
       </div>
@@ -244,11 +244,11 @@ export default function Dashboard() {
 
 function Widget({ title, value, sub, icon, isAlert }) {
   return (
-    <div className="p-8 sm:p-10 bg-white dark:bg-[#0A0F1E] border border-slate-100 dark:border-white/5 rounded-[2rem] sm:rounded-[3rem] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
-      <div className={`p-3 bg-slate-50 dark:bg-white/5 w-fit rounded-2xl mb-8 ${isAlert ? 'text-rose-500' : 'text-slate-900 dark:text-slate-100'}`}>{icon}</div>
-      <p className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest leading-none">{title}</p>
-      <h2 className="text-3xl sm:text-4xl font-light text-slate-950 dark:text-white tracking-tighter mt-2">{value}</h2>
-      <p className="text-[10px] mt-5 text-slate-400 font-bold uppercase tracking-[0.2em]">{sub}</p>
+    <div className="p-5 sm:p-7 lg:p-8 bg-white dark:bg-[#0A0F1E] border border-slate-100 dark:border-white/5 rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-500">
+      <div className={`p-2.5 sm:p-3 bg-slate-50 dark:bg-white/5 w-fit rounded-xl sm:rounded-2xl mb-5 sm:mb-6 ${isAlert ? 'text-rose-500' : 'text-slate-900 dark:text-slate-100'}`}>{icon}</div>
+      <p className="text-[9px] sm:text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest leading-none">{title}</p>
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-950 dark:text-white tracking-tighter mt-2">{value}</h2>
+      <p className="text-[9px] sm:text-[10px] mt-4 sm:mt-5 text-slate-400 font-bold uppercase tracking-[0.2em]">{sub}</p>
     </div>
   );
 }

@@ -40,7 +40,7 @@
   }
 
   main {
-    min-height: 100vh;
+    min-height: auto;
     width: 100%;
   }
 
@@ -131,4 +131,35 @@ input:-webkit-autofill {
   );
   background-size: 200% 100%;
   animation: shimmer 4s infinite linear;
+}
+
+/* Enhanced Responsive Utilities */
+@layer utilities {
+  @media (max-width: 639px) {
+    .xs\:p-3 { @apply p-3; }
+    .xs\:gap-3 { @apply gap-3; }
+    .xs\:text-sm { @apply text-sm; }
+  }
+  
+  /* Smooth transitions for responsive changes */
+  .responsive-transition {
+    @apply transition-all duration-500 ease-in-out;
+  }
+  
+  /* Better card hover states */
+  .card-hover {
+    @apply hover:shadow-lg hover:-translate-y-1 transition-all duration-300;
+  }
+  
+  /* Improved button states */
+  .btn-smooth {
+    @apply transition-all duration-200 ease-in-out active:scale-95;
+  }
+}
+
+/* Improved mobile scrolling */
+@supports (scrollbar-gutter: stable) {
+  html {
+    scrollbar-gutter: stable;
+  }
 }

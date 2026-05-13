@@ -90,26 +90,26 @@ export default function StudentHub() {
   );
 
   return (
-    <div className="space-y-12 animate-fade-in font-sans font-light pb-20 relative dark:text-slate-200">
+    <div className="space-y-8 sm:space-y-10 animate-fade-in font-sans font-light pb-10 sm:pb-12 relative dark:text-slate-200">
       
       {/* 1. ELEGANT HEADER */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-100 dark:border-white/5 pb-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 border-b border-slate-100 dark:border-white/5 pb-6 sm:pb-8">
          <div>
-            <h1 className="text-4xl font-light text-slate-950 dark:text-white tracking-tighter uppercase tracking-[0.05em]">Student Hub</h1>
-            <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400 dark:text-slate-500 font-bold mt-2">Active Learning Protocol — 2026</p>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-950 dark:text-white tracking-tighter uppercase">Student Hub</h1>
+            <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-slate-400 dark:text-slate-500 font-bold mt-2">Active Learning Protocol — 2026</p>
          </div>
-         <div className="flex items-center gap-3 bg-emerald-50 dark:bg-emerald-500/10 px-6 py-3 rounded-2xl border border-emerald-100 dark:border-emerald-500/20">
-            <Heart size={14} className="text-emerald-500 animate-pulse"/>
-            <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Attendance: 98%</span>
+         <div className="flex items-center gap-2 sm:gap-3 bg-emerald-50 dark:bg-emerald-500/10 px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl border border-emerald-100 dark:border-emerald-500/20">
+            <Heart size={13} className="text-emerald-500 animate-pulse"/>
+            <span className="text-[9px] sm:text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Attendance: 98%</span>
          </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
         
         {/* 2. REFINED LESSON FEED (LEFT COLUMN) */}
-        <div className="lg:col-span-2 space-y-8">
-           <h3 className="text-[11px] font-bold text-slate-300 dark:text-slate-600 uppercase tracking-[0.3em] ml-2">Assigned Syllabus</h3>
-           <div className="space-y-4">
+        <div className="lg:col-span-2 space-y-5 sm:space-y-6">
+           <h3 className="text-[10px] sm:text-[11px] font-bold text-slate-300 dark:text-slate-600 uppercase tracking-[0.3em] ml-1 sm:ml-2">Assigned Syllabus</h3>
+           <div className="space-y-3 sm:space-y-4">
               <LessonItem 
                 title="Introduction to Geometry" 
                 sub="Grade 10 • Mathematics" 
@@ -128,11 +128,11 @@ export default function StudentHub() {
         </div>
 
         {/* 3. SERVICE TILES (RIGHT COLUMN) */}
-        <div className="space-y-8">
-           <h3 className="text-[11px] font-bold text-slate-300 dark:text-slate-600 uppercase tracking-[0.3em] ml-2">Administrative Services</h3>
-           <div className="grid grid-cols-1 gap-4">
-              <ServiceCard title="Fee Challans" sub="1 Pending Payment" icon={<Wallet size={20}/>} color="indigo" />
-              <ServiceCard title="Assignments" sub="2 Submissions Due" icon={<CalendarCheck size={20}/>} color="rose" />
+        <div className="space-y-5 sm:space-y-6">
+           <h3 className="text-[10px] sm:text-[11px] font-bold text-slate-300 dark:text-slate-600 uppercase tracking-[0.3em] ml-1 sm:ml-2">Administrative Services</h3>
+           <div className="grid grid-cols-1 gap-3 sm:gap-4">
+              <ServiceCard title="Fee Challans" sub="1 Pending Payment" icon={<Wallet size={18}/>} color="indigo" />
+              <ServiceCard title="Assignments" sub="2 Submissions Due" icon={<CalendarCheck size={18}/>} color="rose" />
            </div>
         </div>
       </div>
@@ -141,11 +141,11 @@ export default function StudentHub() {
       {selectedLesson && (
         <>
           <div className="fixed inset-0 bg-slate-900/10 dark:bg-black/40 backdrop-blur-md z-[100] animate-in fade-in duration-300" onClick={() => setSelectedLesson(null)}></div>
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-100 dark:border-white/5 shadow-2xl z-[101] animate-in zoom-in-95 duration-300 overflow-hidden">
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg mx-4 bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-100 dark:border-white/5 shadow-2xl z-[101] animate-in zoom-in-95 duration-300 overflow-hidden max-h-[90vh] overflow-y-auto">
              {/* Modal Decoration */}
              <div className="h-2 w-full bg-gradient-to-r from-indigo-500 to-purple-500"></div>
              
-             <div className="p-12 space-y-10">
+             <div className="p-6 sm:p-10 space-y-8 sm:space-y-10">
                 <div className="flex justify-between items-start">
                    <div>
                       <span className="text-[9px] font-black uppercase text-indigo-500 dark:text-indigo-400 tracking-[0.4em] bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1 rounded-md">Validated Source</span>

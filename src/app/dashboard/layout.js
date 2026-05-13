@@ -151,18 +151,18 @@ export default function DashboardLayout({ children }) {
       />
 
       {/* 2. MAIN AREA */}
-      <div className={`flex-1 transition-all duration-700 ${isCollapsed ? 'lg:ml-20' : 'lg:ml-72'} ml-0`}>        
-        <header className="h-auto min-h-[64px] px-4 sm:px-6 lg:px-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sticky top-0 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl z-30 border-b border-slate-100 dark:border-white/5">
+      <div className={`flex flex-col flex-1 transition-all duration-700 ${isCollapsed ? 'lg:ml-20' : 'lg:ml-72'} ml-0`}>        
+        <header className="h-auto min-h-[60px] px-3 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sticky top-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl z-30 border-b border-slate-100 dark:border-white/5">
           <div className="flex flex-wrap items-center gap-4">
              <button onClick={() => setIsMobileOpen((state) => !state)} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800 lg:hidden">
                {isMobileOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
              </button>
-             <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] font-semibold text-slate-700 dark:text-slate-400">
-                <Calendar size={13} strokeWidth={1} className="text-indigo-600" /> {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}
+             <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.3em] font-semibold text-slate-600 dark:text-slate-400">
+                <Calendar size={12} strokeWidth={1} className="text-indigo-600" /> {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
              </div>
-             <span className="hidden sm:block w-px h-3 bg-slate-200 dark:bg-slate-700"></span>
-             <h2 className="text-slate-900 dark:text-white text-[10px] font-bold uppercase tracking-[0.4em]">
-                {pathname.split('/').pop()?.replace('-', ' ') || 'Protocol'}
+             <span className="hidden sm:block w-px h-2 bg-slate-200 dark:bg-slate-700"></span>
+             <h2 className="text-slate-900 dark:text-white text-[9px] font-bold uppercase tracking-[0.3em]">
+                {pathname.split('/').pop()?.replace('-', ' ') || 'Module'}
              </h2>
           </div>
           
@@ -216,17 +216,17 @@ export default function DashboardLayout({ children }) {
           </div>
         </header>
 
-        <main className="p-2 xs:p-3 sm:p-6 lg:p-10 relative min-h-screen w-full">
-           {/* DECORATIVE LIGHT GLASS BLOBS */}
-           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50/20 rounded-full blur-[120px] -z-10 pointer-events-none opacity-100 dark:opacity-0"></div>
+        <main className="flex-1 px-2 sm:px-5 lg:px-8 py-4 sm:py-5 lg:py-6 relative w-full overflow-y-auto">
+           {/* DECORATIVE LIGHT GLASS BLOBS - FIXED POSITION */}
+           <div className="fixed top-0 right-0 w-[600px] h-[600px] bg-indigo-50/30 rounded-full blur-[150px] -z-10 pointer-events-none opacity-100 dark:opacity-0"></div>
            
            {isLoading ? (
-             <div className="h-[50vh] flex flex-col items-center justify-center gap-6 opacity-30">
+             <div className="h-[50vh] flex flex-col items-center justify-center gap-6">
                <Loader2 className="animate-spin text-indigo-400" size={24} strokeWidth={1.5}/>
                <p className="text-[10px] uppercase tracking-[0.6em] font-medium animate-pulse text-slate-500">Establishing Session</p>
              </div>
            ) : (
-             <div className="animate-in fade-in slide-in-from-bottom-6 duration-1000">
+             <div className="animate-in fade-in duration-700 w-full">
                 {children}
              </div>
            )}
