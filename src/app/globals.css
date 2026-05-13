@@ -9,8 +9,14 @@
 }
 
 @layer base {
-  * {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
+    min-width: 0;
+  }
+
+  * {
     /* Fixed: Using standard border-slate-200 instead of the broken border-border */
     @apply border-slate-100 dark:border-slate-800 outline-none;
   }
@@ -31,6 +37,12 @@
   img, svg {
     max-width: 100%;
     height: auto;
+  }
+
+  table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
   }
 
   /* Thin, Architectural fonts for headings */

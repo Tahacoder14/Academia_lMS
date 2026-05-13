@@ -106,6 +106,8 @@ export default function ChallansPage() {
     }
   };
 
+  const selectedStudents = students.filter((row) => selectedIds.has(row.student_id));
+
   const bulkGenerate = async () => {
     if (!classId || selectedIds.size === 0) {
       alert('Pick a class and at least one student.');
@@ -210,19 +212,27 @@ export default function ChallansPage() {
               const id = row.student_id;
               const checked = selectedIds.has(id);
               return (
-                <label key={id} className="flex items-center gap-3 px-4 py-2 text-sm cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => {
-                      const next = new Set(selectedIds);
-                      if (checked) next.delete(id);
-                      else next.add(id);
-                      setSelectedIds(next);
-                    }}
-                  />
-                  <span>{s?.full_name || id}</span>
-                  <span className="text-slate-400 text-xs">Roll: {s?.roll_number || '—'}</span>
+                <label key={id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 py-3 text-sm cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => {
+                        const next = new Set(selectedIds);
+                        if (checked) next.delete(id);
+                        else next.add(id);
+                        setSelectedIds(next);
+                      }}
+                    />
+                    <div>
+                      <p className="font-medium text-slate-900 dark:text-white">{s?.full_name || id}</p>
+                      <p className="text-[10px] text-slate-400">{s?.email || 'No email'}</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                    <span>Roll: {s?.roll_number || '—'}</span>
+                    <span>Amount: PKR {Number(amount || 0).toLocaleString('en-PK')}</span>
+                  </div>
                 </label>
               );
             })}
@@ -237,6 +247,36 @@ export default function ChallansPage() {
           >
             Generate for selected
           </button>
+
+          <div className="overflow-x-auto rounded-3xl border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-slate-950 p-4">
+            <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Selected student fee list</h2>
+            <table className="min-w-full text-left text-sm">
+              <thead>
+                <tr className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/10">
+                  <th className="px-3 py-3 sm:px-4">Student</th>
+                  <th className="px-3 py-3 sm:px-4">Roll no</th>
+                  <th className="px-3 py-3 sm:px-4">Email</th>
+                  <th className="px-3 py-3 sm:px-4">Amount</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 dark:divide-white/10">
+                {selectedStudents.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="px-3 py-6 text-center text-slate-500 dark:text-slate-400">Select students above to preview and confirm challan values.</td>
+                  </tr>
+                ) : (
+                  selectedStudents.map((row) => (
+                    <tr key={row.student_id} className="hover:bg-white dark:hover:bg-slate-900 transition-colors">
+                      <td className="px-3 py-3 sm:px-4 font-medium text-slate-900 dark:text-white">{row.student?.full_name || row.student_id}</td>
+                      <td className="px-3 py-3 sm:px-4 text-slate-600 dark:text-slate-300">{row.student?.roll_number || '—'}</td>
+                      <td className="px-3 py-3 sm:px-4 text-slate-600 dark:text-slate-300 truncate max-w-[220px]">{row.student?.email || 'Unknown'}</td>
+                      <td className="px-3 py-3 sm:px-4 font-semibold text-slate-900 dark:text-white">PKR {Number(amount || 0).toLocaleString('en-PK')}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );

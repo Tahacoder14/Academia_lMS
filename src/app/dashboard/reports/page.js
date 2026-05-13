@@ -392,29 +392,31 @@ export default function ReportsPage() {
 
       {/* 3. RANKINGS TABLE */}
       <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-[2.5rem] shadow-sm overflow-hidden">
-        <div className="p-10 flex justify-between items-center border-b border-slate-50 dark:border-white/5">
+        <div className="p-10 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 border-b border-slate-50 dark:border-white/5">
            <h3 className="text-xl font-light text-slate-900 dark:text-white tracking-tight">Campus Benchmark Rankings</h3>
-           <div className="relative">
+           <div className="relative w-full sm:w-auto">
               <Search className="absolute left-3 top-3 text-slate-300 dark:text-slate-600" size={14}/>
-              <input className="pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-medium outline-none focus:ring-1 ring-indigo-200 dark:ring-indigo-500/30 dark:text-slate-300" placeholder="Find Campus..."/>
+              <input className="w-full sm:w-auto pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-medium outline-none focus:ring-1 ring-indigo-200 dark:ring-indigo-500/30 dark:text-slate-300" placeholder="Find Campus..."/>
            </div>
         </div>
-        <table className="w-full text-left">
-           <thead>
-              <tr className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
-                 <th className="px-10 py-5">Campus Name</th>
-                 <th className="px-10 py-5">Province</th>
-                 <th className="px-10 py-5">Enrollment</th>
-                 <th className="px-10 py-5">Avg. Performance</th>
-                 <th className="px-10 py-5">Status</th>
-              </tr>
-           </thead>
-           <tbody className="divide-y divide-slate-50 dark:divide-white/5 text-sm">
-              <ReportRow name="EduPro Academy - Lahore Central" id="PK-PB-001" province="Punjab" users="2,450" score="88.4%" top />
-              <ReportRow name="Karachi Grammar International" id="PK-SN-042" province="Sindh" users="3,120" score="72.1%" />
-              <ReportRow name="Peshawar Model High" id="PK-KP-018" province="KPK" users="1,890" score="58.9%" warning />
-           </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-left">
+             <thead>
+                <tr className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5 border-b border-slate-100 dark:border-white/5">
+                   <th className="px-4 sm:px-6 py-5">Campus Name</th>
+                   <th className="px-4 sm:px-6 py-5">Province</th>
+                   <th className="px-4 sm:px-6 py-5">Enrollment</th>
+                   <th className="px-4 sm:px-6 py-5">Avg. Performance</th>
+                   <th className="px-4 sm:px-6 py-5">Status</th>
+                </tr>
+             </thead>
+             <tbody className="divide-y divide-slate-50 dark:divide-white/5 text-sm">
+                <ReportRow name="EduPro Academy - Lahore Central" id="PK-PB-001" province="Punjab" users="2,450" score="88.4%" top />
+                <ReportRow name="Karachi Grammar International" id="PK-SN-042" province="Sindh" users="3,120" score="72.1%" />
+                <ReportRow name="Peshawar Model High" id="PK-KP-018" province="KPK" users="1,890" score="58.9%" warning />
+             </tbody>
+          </table>
+        </div>
       </div>
 
       {/* 4. INSIGHTS SECTION */}
@@ -476,17 +478,17 @@ function BarGroup({ label, h1, h2 }) {
 function ReportRow({ name, id, province, users, score, top, warning }) {
   return (
     <tr className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
-       <td className="px-10 py-6">
+       <td className="px-4 sm:px-6 py-6">
           <p className="text-[13px] font-bold text-slate-950 dark:text-white">{name}</p>
           <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">ID: {id}</p>
        </td>
-       <td className="px-10 py-6 text-slate-500 dark:text-slate-400 font-medium">{province}</td>
-       <td className="px-10 py-6 text-slate-500 dark:text-slate-400 font-medium">{users}</td>
-       <td className="px-10 py-6">
+       <td className="px-4 sm:px-6 py-6 text-slate-500 dark:text-slate-400 font-medium">{province}</td>
+       <td className="px-4 sm:px-6 py-6 text-slate-500 dark:text-slate-400 font-medium">{users}</td>
+       <td className="px-4 sm:px-6 py-6">
           <span className={`text-[12px] font-bold ${warning ? 'text-rose-500 dark:text-rose-400' : 'text-slate-950 dark:text-white'}`}>{score}</span>
-          {top && <span className="ml-3 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-black uppercase rounded">Top 5%</span>}
+          {top && <span className="ml-2 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-black uppercase rounded">Top 5%</span>}
        </td>
-       <td className="px-10 py-6">
+       <td className="px-4 sm:px-6 py-6">
           <span className={`text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest border ${warning ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-100 dark:border-rose-500/20' : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20'}`}>
             {warning ? 'At Risk' : 'Optimal'}
           </span>

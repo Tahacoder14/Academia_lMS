@@ -89,18 +89,18 @@ function PrincipalHub({ userData }) {
     : submissions.filter(s => s.status === filter);
 
   return (
-    <div className="space-y-12 animate-fade-in font-sans font-light">
-      <header className="flex justify-between items-end border-b border-slate-200 dark:border-slate-800 pb-10">
-        <div className="space-y-1">
-          <p className="text-[9px] font-bold uppercase tracking-[0.5em] text-slate-400">Principal Control</p>
-          <h1 className="text-4xl font-light text-slate-900 dark:text-white tracking-tighter uppercase">Academic Oversight</h1>
+    <div className="space-y-10 animate-fade-in font-sans font-light">
+      <header className="flex flex-col gap-6 sm:flex-row sm:items-end justify-between border-b border-slate-200 dark:border-slate-800 pb-8">
+        <div className="space-y-2 max-w-full">
+          <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-slate-400">Principal Control</p>
+          <h1 className="text-3xl sm:text-4xl font-light text-slate-900 dark:text-white tracking-tight uppercase">Academic Oversight</h1>
         </div>
-        <button className="px-8 py-3 bg-[#001026] hover:bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl transition-all">
+        <button className="px-5 py-2 bg-[#001026] hover:bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl transition-all whitespace-nowrap">
            <TrendingUp size={16} className="inline mr-2"/> Full Analytics
         </button>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <MetricBox title="Total Submissions" value={stats.total} trend="This Month" color="indigo" />
         <MetricBox title="Pending Review" value={stats.pending} trend="Urgent" color="rose" />
         <MetricBox title="Approved" value={stats.approved} trend="✓ Verified" color="emerald" />
@@ -124,54 +124,56 @@ function PrincipalHub({ userData }) {
       </div>
 
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] shadow-sm overflow-hidden">
-        <table className="w-full text-left text-[12px]">
-          <thead>
-            <tr className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-              <th className="px-8 py-5 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Worksheet Title</th>
-              <th className="px-8 py-5 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Teacher</th>
-              <th className="px-8 py-5 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Class</th>
-              <th className="px-8 py-5 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Subject</th>
-              <th className="px-8 py-5 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Status</th>
-              <th className="px-8 py-5 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Date</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-            {filteredSubmissions.length > 0 ? (
-              filteredSubmissions.map(sub => (
-                <tr key={sub.id} className="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                  <td className="px-8 py-5 font-medium text-slate-800 dark:text-slate-100">{sub.title || 'Untitled'}</td>
-                  <td className="px-8 py-5 text-slate-600 dark:text-slate-300">{sub.teacher?.name || 'Unknown'}</td>
-                  <td className="px-8 py-5 text-slate-600 dark:text-slate-300">{sub.teacher?.class || 'N/A'}</td>
-                  <td className="px-8 py-5 text-slate-600 dark:text-slate-300">{sub.subject || 'N/A'}</td>
-                  <td className="px-8 py-5">
-                    <span className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase ${
-                      sub.status === 'approved' ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400' :
-                      sub.status === 'rejected' ? 'bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-400' :
-                      'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400'
-                    }`}>
-                      {sub.status}
-                    </span>
-                  </td>
-                  <td className="px-8 py-5 text-slate-500 dark:text-slate-400">{new Date(sub.created_at).toLocaleDateString()}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="px-8 py-12 text-center text-slate-400 dark:text-slate-500">No submissions found</td>
+        <div className="overflow-x-auto min-w-full">
+          <table className="min-w-full text-left text-[12px]">
+            <thead>
+              <tr className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                <th className="px-4 py-4 sm:px-6 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Worksheet Title</th>
+                <th className="px-4 py-4 sm:px-6 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Teacher</th>
+                <th className="px-4 py-4 sm:px-6 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Class</th>
+                <th className="px-4 py-4 sm:px-6 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Subject</th>
+                <th className="px-4 py-4 sm:px-6 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Status</th>
+                <th className="px-4 py-4 sm:px-6 font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Date</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              {filteredSubmissions.length > 0 ? (
+                filteredSubmissions.map(sub => (
+                  <tr key={sub.id} className="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    <td className="px-4 py-4 sm:px-6 font-medium text-slate-800 dark:text-slate-100">{sub.title || 'Untitled'}</td>
+                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-300">{sub.teacher?.name || 'Unknown'}</td>
+                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-300">{sub.teacher?.class || 'N/A'}</td>
+                    <td className="px-4 py-4 sm:px-6 text-slate-600 dark:text-slate-300">{sub.subject || 'N/A'}</td>
+                    <td className="px-4 py-4 sm:px-6">
+                      <span className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase ${
+                        sub.status === 'approved' ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400' :
+                        sub.status === 'rejected' ? 'bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-400' :
+                        'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400'
+                      }`}>
+                        {sub.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4 sm:px-6 text-slate-500 dark:text-slate-400">{new Date(sub.created_at).toLocaleDateString()}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="px-4 py-12 sm:px-6 text-center text-slate-400 dark:text-slate-500">No submissions found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-10 shadow-sm">
-        <h3 className="text-xl font-light text-slate-900 dark:text-white mb-8 uppercase tracking-wide">Teachers Overview</h3>
-        <div className="space-y-3">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-6 sm:p-8 shadow-sm">
+        <h3 className="text-xl font-light text-slate-900 dark:text-white mb-6 uppercase tracking-wide">Teachers Overview</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {teachers.map(teacher => {
             const teacherSubs = submissions.filter(s => s.teacher_id === teacher.id);
             return (
-              <div key={teacher.id} className="border border-slate-200 dark:border-slate-700 rounded-2xl p-6 hover:shadow-lg transition-all">
-                <div className="flex justify-between items-center">
+              <div key={teacher.id} className="border border-slate-200 dark:border-slate-700 rounded-2xl p-5 sm:p-6 hover:shadow-lg transition-all">
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
                   <div>
                     <p className="font-medium text-slate-800 dark:text-slate-100">{teacher.name}</p>
                     <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">{teacher.email}</p>
@@ -200,8 +202,8 @@ function MetricBox({ title, value, trend, color }) {
   };
 
   return (
-    <div className={`p-10 ${bgColors[color]} border border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1`}>
-      <div className="flex justify-between items-start mb-10">
+    <div className={`p-8 sm:p-10 ${bgColors[color]} border border-slate-200 dark:border-slate-700 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1`}>
+      <div className="flex flex-col gap-4 justify-between items-start mb-8 sm:flex-row sm:items-center">
         <div className={`p-3 rounded-2xl ${bgColors[color]}`}><BarChart3 size={18}/></div>
         <span className={`text-[10px] font-black uppercase tracking-tighter px-3 py-1 rounded-md ${bgColors[color]}`}>{trend}</span>
       </div>
@@ -562,8 +564,8 @@ function CreateWorksheetModal({ isOpen, onClose, formData, setFormData, onSubmit
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-end bg-black/60 dark:bg-black/80 backdrop-blur-md">
-      <div className="w-full max-w-lg bg-white dark:bg-slate-900 h-full shadow-2xl p-8 overflow-y-auto">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/60 dark:bg-black/80 backdrop-blur-md px-4 py-6 sm:px-6 sm:py-8">
+      <div className="w-full max-w-lg bg-white dark:bg-slate-900 max-h-[95vh] shadow-2xl p-6 sm:p-8 overflow-y-auto rounded-[2rem]">
         {/* HEADER */}
         <div className="flex justify-between items-center mb-10">
           <button 

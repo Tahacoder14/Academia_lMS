@@ -63,15 +63,16 @@ export default function AttendanceHub() {
           <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">Latest records synced from your classes.</p>
         </div>
         <div className="rounded-3xl border border-slate-100 dark:border-white/10 overflow-hidden bg-white dark:bg-slate-900">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 dark:bg-white/5 text-[10px] uppercase tracking-widest text-slate-400">
-              <tr>
-                <th className="text-left p-4">Date</th>
-                <th className="text-left p-4">Class</th>
-                <th className="text-left p-4">Subject</th>
-                <th className="text-left p-4">Status</th>
-              </tr>
-            </thead>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead className="bg-slate-50 dark:bg-white/5 text-[10px] uppercase tracking-widest text-slate-400">
+                <tr>
+                  <th className="text-left p-4">Date</th>
+                  <th className="text-left p-4">Class</th>
+                  <th className="text-left p-4">Subject</th>
+                  <th className="text-left p-4">Status</th>
+                </tr>
+              </thead>
             <tbody>
               {rows.length === 0 ? (
                 <tr>

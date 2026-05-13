@@ -222,7 +222,7 @@ export default function CoordinatorDashboard() {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-6 py-4 text-[11px] font-bold uppercase tracking-[0.3em] transition-colors border-b-2 whitespace-nowrap ${
+            className={`px-4 sm:px-6 py-4 text-[11px] font-bold uppercase tracking-[0.3em] transition-colors border-b-2 whitespace-nowrap sm:whitespace-normal ${
               activeTab === tab
                 ? 'text-indigo-600 dark:text-indigo-400 border-indigo-600'
                 : 'text-slate-500 border-transparent hover:text-slate-900 dark:hover:text-white'
@@ -281,7 +281,7 @@ export default function CoordinatorDashboard() {
       {/* ============ TEACHERS TAB ============ */}
       {activeTab === 'teachers' && (
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="min-w-full">
             <thead className="border-b border-slate-100 dark:border-white/10">
               <tr className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                 <th className="text-left py-4 px-6">Teacher Name</th>
