@@ -61,7 +61,7 @@ function PrincipalHub({ userData }) {
     try {
       const { data: subs } = await supabase
         .from('worksheets')
-        .select('*, teacher:teacher_id(name, email, class)')
+        .select('*')
         .order('created_at', { ascending: false });
       
       setSubmissions(subs || []);
@@ -90,12 +90,12 @@ function PrincipalHub({ userData }) {
 
   return (
     <div className="space-y-10 animate-fade-in font-sans font-light">
-      <header className="flex flex-col gap-6 sm:flex-row sm:items-end justify-between border-b border-slate-200 dark:border-slate-800 pb-8">
-        <div className="space-y-2 max-w-full">
+      <header className="flex flex-col gap-4 sm:gap-6 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 dark:border-slate-800 pb-6 sm:pb-8">
+        <div className="space-y-1 min-w-0">
           <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-slate-400">Principal Control</p>
-          <h1 className="text-3xl sm:text-4xl font-light text-slate-900 dark:text-white tracking-tight uppercase">Academic Oversight</h1>
+          <h1 className="text-2xl sm:text-3xl font-light text-slate-900 dark:text-white tracking-tight uppercase">Academic Oversight</h1>
         </div>
-        <button className="px-5 py-2 bg-[#001026] hover:bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl transition-all whitespace-nowrap">
+        <button className="w-full sm:w-auto px-4 sm:px-5 py-2.5 bg-[#001026] hover:bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl transition-all whitespace-nowrap">
            <TrendingUp size={16} className="inline mr-2"/> Full Analytics
         </button>
       </header>
@@ -462,23 +462,23 @@ function TeacherHub({ userData }) {
   };
 
   return (
-    <div className="space-y-12 animate-fade-in font-sans font-light">
+    <div className="space-y-6 sm:space-y-12 animate-fade-in font-sans font-light">
       {/* HEADER */}
-      <header className="flex justify-between items-end border-b border-slate-200 dark:border-slate-800 pb-10">
-        <div>
+      <header className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-end border-b border-slate-200 dark:border-slate-800 pb-6 sm:pb-10">
+        <div className="min-w-0">
           <p className="text-[9px] uppercase tracking-[0.5em] text-slate-400 font-bold italic">My Academic Portal</p>
-          <h1 className="text-3xl font-light text-slate-900 dark:text-white tracking-tighter uppercase">Worksheet Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-light text-slate-900 dark:text-white tracking-tighter uppercase">Worksheet Dashboard</h1>
         </div>
         <button 
           onClick={() => setIsFormOpen(true)}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-2xl transition-all active:scale-95"
+          className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-6 sm:px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-2xl transition-all active:scale-95"
         >
           <PlusCircle size={16} className="inline mr-2"/> Create Worksheet
         </button>
       </header>
 
       {/* QUICK STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6">
         <StatCard label="Total Created" value={stats.total} color="indigo" />
         <StatCard label="Pending Review" value={stats.pending} color="amber" />
         <StatCard label="Approved" value={stats.approved} color="emerald" />
@@ -494,7 +494,7 @@ function TeacherHub({ userData }) {
            <p className="text-xs italic mt-2 text-slate-500 dark:text-slate-400">Start creating by clicking the button above.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
           {worksheets.map(ws => (
             <WorksheetCard key={ws.id} worksheet={ws} />
           ))}
@@ -709,14 +709,14 @@ function StudentDashboard({ data }) {
     : worksheets.filter(w => w.subject === filter);
 
   return (
-    <div className="space-y-12 animate-fade-in font-sans font-light">
-      <header className="flex justify-between items-end border-b border-slate-200 dark:border-slate-800 pb-10">
-        <div>
+    <div className="space-y-6 sm:space-y-12 animate-fade-in font-sans font-light">
+      <header className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-end border-b border-slate-200 dark:border-slate-800 pb-6 sm:pb-10">
+        <div className="min-w-0">
           <p className="text-[9px] uppercase tracking-[0.5em] text-slate-400 font-bold italic">Learning Center</p>
-          <h1 className="text-3xl font-light text-slate-900 dark:text-white tracking-tighter uppercase">Study Materials</h1>
+          <h1 className="text-2xl sm:text-3xl font-light text-slate-900 dark:text-white tracking-tighter uppercase">Study Materials</h1>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold text-indigo-600">{filteredWorksheets.length}</p>
+          <p className="text-xl sm:text-2xl font-bold text-indigo-600">{filteredWorksheets.length}</p>
           <p className="text-[9px] text-slate-400 dark:text-slate-500 uppercase tracking-widest">Available</p>
         </div>
       </header>
@@ -725,7 +725,7 @@ function StudentDashboard({ data }) {
       <div className="flex gap-2 overflow-x-auto pb-2">
         <button
           onClick={() => setFilter('all')}
-          className={`px-6 py-2 text-[10px] font-bold uppercase tracking-widest rounded-full whitespace-nowrap transition-all ${
+          className={`px-4 sm:px-6 py-2 text-[10px] font-bold uppercase tracking-widest rounded-full whitespace-nowrap transition-all ${
             filter === 'all' 
               ? 'bg-indigo-600 text-white shadow-lg' 
               : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
@@ -737,7 +737,7 @@ function StudentDashboard({ data }) {
           <button
             key={subject}
             onClick={() => setFilter(subject)}
-            className={`px-6 py-2 text-[10px] font-bold uppercase tracking-widest rounded-full whitespace-nowrap transition-all ${
+            className={`px-4 sm:px-6 py-2 text-[10px] font-bold uppercase tracking-widest rounded-full whitespace-nowrap transition-all ${
               filter === subject 
                 ? 'bg-indigo-600 text-white shadow-lg' 
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
@@ -758,7 +758,7 @@ function StudentDashboard({ data }) {
           <p className="text-xs italic mt-2 text-slate-500 dark:text-slate-400">Check back soon for approved study materials.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredWorksheets.map(ws => (
             <div 
               key={ws.id} 

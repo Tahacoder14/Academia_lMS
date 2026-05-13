@@ -216,7 +216,7 @@ export default function DashboardLayout({ children }) {
           </div>
         </header>
 
-        <main className="p-4 sm:p-8 lg:p-12 relative min-h-screen">
+        <main className="p-2 xs:p-3 sm:p-6 lg:p-10 relative min-h-screen w-full">
            {/* DECORATIVE LIGHT GLASS BLOBS */}
            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-50/20 rounded-full blur-[120px] -z-10 pointer-events-none opacity-100 dark:opacity-0"></div>
            
