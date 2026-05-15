@@ -33,7 +33,7 @@ export default function AcademicRegistry() {
 
   if (loading) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4">
+      <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4 px-4">
         <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
         <p className="text-xs uppercase tracking-[0.5em] font-medium text-slate-500 dark:text-slate-400">
           Connecting to Academic Core
@@ -91,7 +91,7 @@ function PrincipalHub({ userData }) {
     : submissions.filter(s => s.status === filter);
 
   return (
-    <div className="space-y-8 pb-8">
+    <div className="space-y-8 pb-8 px-3 sm:px-0 max-w-full">
       <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 dark:border-white/10 pb-6">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Principal Control</p>
@@ -128,7 +128,7 @@ function PrincipalHub({ userData }) {
       {/* Submissions Table */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[700px]">
             <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-white/10">
               <tr>
                 <th className="text-left px-6 py-5 font-medium text-slate-500 dark:text-slate-400 uppercase text-xs tracking-widest">Worksheet</th>
@@ -172,7 +172,7 @@ function PrincipalHub({ userData }) {
       </div>
 
       {/* Teachers Overview */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-5 sm:p-8">
         <h3 className="text-xl font-light mb-6">Teachers Overview</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {teachers.map(teacher => {
@@ -214,6 +214,7 @@ function MetricBox({ title, value, trend, color }) {
     </div>
   );
 }
+
 /* ===================== COORDINATOR HUB ===================== */
 function CoordinatorHub({ userData }) {
   const [submissions, setSubmissions] = useState([]);
@@ -274,7 +275,7 @@ function CoordinatorHub({ userData }) {
   });
 
   return (
-    <div className="space-y-8 pb-8">
+    <div className="space-y-8 pb-8 px-3 sm:px-0">
       <header className="border-b border-slate-200 dark:border-white/10 pb-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
@@ -343,11 +344,11 @@ function SubmissionCard({ submission, onApprove, onReject }) {
   const [rejectReason, setRejectReason] = useState("");
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl transition-all">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-3xl p-5 sm:p-8 shadow-sm hover:shadow-xl transition-all">
       <div className="flex justify-between items-start">
         <div className="flex-1">
           <h3 className="text-xl font-medium text-slate-900 dark:text-white">{submission.title || 'Untitled Worksheet'}</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-3 mt-6 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4 mt-6 text-sm">
             <div>
               <p className="text-xs text-slate-500 uppercase tracking-widest">Teacher</p>
               <p className="font-medium">{submission.teacher?.name}</p>
@@ -479,7 +480,7 @@ function TeacherHub({ userData }) {
   };
 
   return (
-    <div className="space-y-8 pb-8">
+    <div className="space-y-8 pb-8 px-3 sm:px-0">
       <header className="flex flex-col sm:flex-row sm:justify-between sm:items-end border-b border-slate-200 dark:border-white/10 pb-6">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-slate-500">My Academic Portal</p>
@@ -560,7 +561,7 @@ function StudentDashboard({ data }) {
     : worksheets.filter(w => w.subject === filter);
 
   return (
-    <div className="space-y-8 pb-8">
+    <div className="space-y-8 pb-8 px-3 sm:px-0">
       <header className="flex flex-col sm:flex-row sm:justify-between sm:items-end border-b border-slate-200 dark:border-white/10 pb-6">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Learning Center</p>
@@ -641,7 +642,7 @@ function CreateWorksheetModal({ isOpen, onClose, formData, setFormData, onSubmit
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
       <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-h-[92vh] overflow-y-auto">
-        <div className="p-8">
+        <div className="p-6 sm:p-8">
           <div className="flex justify-between items-center mb-8">
             <button onClick={onClose} className="text-slate-400 hover:text-slate-900 dark:hover:text-white">
               <XIcon size={28} />

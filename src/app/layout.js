@@ -1,5 +1,5 @@
 "use client";
-import { Nunito_Sans } from "next/font/google";
+import { Nunito_Sans } from "next/font/google"; // High-clarity Education Font
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ToastProvider } from "@/components/Toast";
@@ -7,39 +7,32 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  weight:["300", "400", "500", "600", "700"], // Removed redundant weights for faster loading
   variable: "--font-nunito",
-  display: "swap",
 });
 
-export default function DashboardLayout({ children }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#0f172a" />
-        <meta name="description" content="Modern School Management System - Academic, Attendance, Finance & More" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        <meta name="theme-color" content="#f8fafc" />
+        <meta name="description" content="A modern, responsive school management dashboard." />
       </head>
-      <body 
-        className={`${nunito.variable} font-sans antialiased 
-                    bg-slate-50 dark:bg-slate-950 
-                    text-slate-900 dark:text-slate-100
-                    min-h-screen overflow-x-hidden`}
-      >
+      
+      {/* 
+        Cleaned body classes:
+        - min-h-screen: Ensures footer stays at bottom if content is short
+        - antialiased: Makes fonts look sharper on all screens
+        - text-rendering: Improves legibility
+      */}
+      <body className={`${nunito.variable} font-sans antialiased text-slate-900 dark:text-slate-50 bg-slate-50 dark:bg-slate-950 min-h-screen flex flex-col`}>
         <ErrorBoundary>
-          <ThemeProvider 
-            attribute="class" 
-            defaultTheme="light" 
-            enableSystem 
-            storageKey="academia-theme"
-          >
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <ToastProvider>
-              <div className="flex min-h-screen flex-col">
-                {/* Main Dashboard Container */}
-                <main className="flex-1 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 transition-all duration-300">
-                  {children}
-                </main>
-              </div>
+              <main className="flex-1 w-full">
+                {children}
+              </main>
             </ToastProvider>
           </ThemeProvider>
         </ErrorBoundary>
